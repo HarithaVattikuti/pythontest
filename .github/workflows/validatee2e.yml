@@ -10,19 +10,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-20.04, ubuntu-latest]
+        os: [macos-latest, windows-latest, ubuntu-latest]
         pypy:
-          - 'pypy-2.7'
           - 'pypy-3.7'
           - 'pypy3.9'
-          - 'pypy-2.7-v7.3.4'
-          - 'pypy-3.7-v7.3.5'
-          - 'pypy-3.7-v7.3.4'
-          - 'pypy-3.7-v7.3.x'
-          - 'pypy-3.7-v7.x'
-          - 'pypy-2.7-v7.3.4rc1'
           - 'pypy-3.7-nightly'
-          - 'pypy3.8-v7.3.7'
           - 'pypy-3.8-nightly'
 
     steps:
