@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "pythontest"
+version = "0.1.0"
+description = ""
+authors = ["HarithaVattikuti <73516759+HarithaVattikuti@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+python101 = "^0.0.1"
+build = "^1.2.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
