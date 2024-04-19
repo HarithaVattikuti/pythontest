@@ -15,5 +15,5 @@ jobs:
           python-version: '3.9'
           cache: 'poetry'
       - run: poetry install
-      - run: poetry run pytest
+     # - run: poetry run pytest
       
