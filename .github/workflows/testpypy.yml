@@ -1,0 +1,19 @@
+name: Test pypy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+        - 'pypy3.7' # the latest available version of PyPy that supports Python 3.7
+        - 'pypy3.7-v7.3.3' # Python 3.7 and PyPy 7.3.3
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - run: python my_script.py
