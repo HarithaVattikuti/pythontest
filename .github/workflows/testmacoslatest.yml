@@ -1,0 +1,39 @@
+name: Test version on Macos Latest
+
+on:
+  workflow_dispatch:
+
+jobs:
+  buildv4:
+    name: Test on v4
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, macos-13, macos-14]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+    
+    steps:
+        - uses: actions/checkout@v2
+
+        - name: Set up Python using v4
+          uses: actions/setup-python@v4
+          with:
+              python-version: ${{ matrix.python-version }}
+
+  buildv5:
+    name: Test on v5
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest , macos-13, macos-14]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+    
+    steps:
+        - uses: actions/checkout@v2
+
+        - name: Set up Python using v5
+          uses: actions/setup-python@v5
+          with:
+              python-version: ${{ matrix.python-version }}
