@@ -1,0 +1,15 @@
+name: tests 3.8
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+        - uses: actions/checkout@v4
+        - name: test 3.8
+          uses: actions/setup-python@v5
+          with:
+            python-version: "3.8"
+            allow-prereleases: true
