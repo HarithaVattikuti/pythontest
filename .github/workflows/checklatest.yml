@@ -25,6 +25,8 @@ jobs:
       with:
         python-version: ${{ github.event.inputs.version }}
         architecture: ${{ github.event.inputs.architecture }}
+        check-latest: true
+
 
     - name: Validate version
       run: |
