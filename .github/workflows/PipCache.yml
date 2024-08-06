@@ -68,3 +68,6 @@ jobs:
           python-version: "3.11"
           architecture: ${{ matrix.target.architecture }}
           cache: "pipenv"
+      
+      - name: Install dependencies
+        run: pipenv install --dev
