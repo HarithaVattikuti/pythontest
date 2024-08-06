@@ -1,0 +1,35 @@
+name: Python cache key testing
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - os: "windows-latest"
+            architecture: "x64"
+          - os: "windows-latest"
+            architecture: "x86"
+          - os: "macos-latest"
+            architecture: "arm64"
+          - os: "macos-12"
+            architecture: "x64"
+    defaults:
+      run:
+        shell: bash
+    runs-on: ${{ matrix.target.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        id: setup-python
+        with:
+          python-version: "3.11"
+          architecture: ${{ matrix.target.architecture }}
+          cache: "poetry"
