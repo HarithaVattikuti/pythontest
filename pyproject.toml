@@ -10,6 +10,13 @@ python = "^3.9"
 python101 = "^0.0.1"
 build = "^1.2.1"
 
+[tool.poetry-dynamic-versioning.substitution]
+folders = [{ path = "." }]
+patterns = [
+  "(^__version__\\s*(?::.*?)?=\\s*['\"])[^'\"]*(['\"])",
+  "(^release\\s*(?::.*?)?=\\s*['\"])[^'\"]*(['\"])",
+  { value = "(^__version_tuple__\\s*(?::.*?)?=\\s*\\()[^)]*(\\))", mode = "tuple" },
+]
 
 [build-system]
 requires = ["poetry-core"]
