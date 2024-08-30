@@ -18,6 +18,20 @@ patterns = [
   { value = "(^__version_tuple__\\s*(?::.*?)?=\\s*\\()[^)]*(\\))", mode = "tuple" },
 ]
 
+[tool.coverage.report]
+exclude_lines = [
+  "if TYPE_CHECKING:",
+  "pragma: no cover",
+  "raise NotImplementedError"
+]
+fail_under = 100
+omit = [
+  "**/tm_devices/commands/**"  # TODO: remove this exclusion
+]
+show_missing = true
+skip_empty = true
+
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
