@@ -1,0 +1,36 @@
+name: Python Setup Test
+
+on: [push]
+
+jobs:
+  setup-python_v4:
+    runs-on: windows-2022
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'  ##### Change this version as needed
+
+      - name: Verify Python installation
+        run: |
+          python --version
+
+  setup-python_v5:
+    runs-on: windows-2022
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'  ##### Change this version as needed
+
+      - name: Verify Python installation
+        run: |
+          python --version
