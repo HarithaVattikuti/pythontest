@@ -9,6 +9,8 @@ readme = "README.md"
 python = "^3.9"
 python101 = "^0.0.1"
 build = "^1.2.1"
+cffi = "^1.15.1"  # Add this line
+
 
 [tool.poetry-dynamic-versioning.substitution]
 folders = [{ path = "." }]
