@@ -1,0 +1,49 @@
+name: Test Poetry Broken
+
+on:  
+  workflow_dispatch:
+
+jobs:
+  test_on_v4:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python-version:
+          - "pypy-3.7"
+          - "pypy-3.8"
+          - "pypy-3.9"
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Poetry
+        run: pipx install poetry
+      - name: Set up python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "poetry"
+      - name: Install dependencies
+        run: poetry install --sync
+      - run: poetry run python --version
+
+  test_on_v5:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python-version:
+          - "pypy-3.7"
+          - "pypy-3.8"
+          - "pypy-3.9"
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Poetry
+        run: pipx install poetry
+      - name: Set up python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "poetry"
+      - name: Install dependencies
+        run: poetry install --sync
+      - run: poetry run python --version
