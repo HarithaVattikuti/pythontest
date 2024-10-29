@@ -1,7 +1,7 @@
 name: Issue on 3717
 
 on: 
-  [workflow_dispatch]:
+  workflow_dispatch:
 
 jobs:
   build:
