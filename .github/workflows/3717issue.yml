@@ -15,4 +15,6 @@ jobs:
     - uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Install ncurses
+      run: brew install ncurses readline
     - run: python -c 'import readline'
