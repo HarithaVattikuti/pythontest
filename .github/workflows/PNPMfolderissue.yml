@@ -33,6 +33,7 @@ jobs:
             exit 1
           else
             echo "pnpm-lock.yaml file found."
+          fi
       
       - name: Setup PNPM Store Config
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER
