@@ -8,7 +8,6 @@ env:
 jobs:
   version_or_release:
     name: 'Version and open PR (or) release private packages'
-    #imeout-minutes: 15
     runs-on: ubuntu-latest
     environment: 'Production - Private Packages'
     steps:
@@ -27,14 +26,6 @@ jobs:
           node-version: 18
           cache: 'pnpm'  # Use 'pnpm' to enable pnpm caching
 
-      # - name: Verify PNPM Cache Directory
-      #   run: |
-      #     if [ ! -d "/home/runner/setup-pnpm/node_modules/.bin/store/v3" ]; then
-      #       echo "PNPM cache directory does not exist, creating it."
-      #       mkdir -p /home/runner/setup-pnpm/node_modules/.bin/store/v3
-      #     else
-      #       echo "PNPM cache directory exists."
-      #     fi
       - name: Check for pnpm-lock.yaml
         run: |
           if [ ! -f "pnpm-lock.yaml" ]; then
@@ -42,7 +33,7 @@ jobs:
             exit 1
           else
             echo "pnpm-lock.yaml file found."
-          fi
+      
       - name: Setup PNPM Store Config
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER
 
@@ -53,6 +44,7 @@ jobs:
         run: |
           echo "Contents of PNPM Cache Directory:"
           ls -la $PNPM_CACHE_FOLDER  # Verify the cache directory contents
+      
       - name: List Node Modules
         run: |
           echo "Contents of Node Modules Directory:"
