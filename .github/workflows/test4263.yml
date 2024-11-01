@@ -1,6 +1,7 @@
 name: Python Setup Test
 
-on: [push]
+on: 
+  workflow_dispatch:
 
 jobs:
   setup-python_v4:
