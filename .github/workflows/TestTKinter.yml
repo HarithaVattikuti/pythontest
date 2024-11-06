@@ -20,6 +20,11 @@ jobs:
      
       - name: Install Tkinter
         run: brew install python-tk@3.13
-        
+
+      - name: Set environment variables for Tkinter
+        run: |
+          export TK_LIBRARY=$(brew --prefix)/lib
+          export TCL_LIBRARY=$(brew --prefix)/lib
+          
       - name: Run tk script
         run: python tk_min.py
