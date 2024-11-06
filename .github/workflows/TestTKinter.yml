@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-13, macos-latest]
-        python-version: ["3.10.10", "3.10.11", "3.11.9", "3.11.10"]
+        python-version: ["3.10.10", "3.10.11", "3.11.9"]
       fail-fast: false
     name: ${{ matrix.python-version }} - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install Tkinter
-        run: sudo apt-get install python3-tk
+        run: brew install python-tk
         
       - name: Run tk script
         run: python tk_min.py
