@@ -17,6 +17,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-
+      - name: Install Tkinter
+        run: sudo apt-get install python3-tk
+        
       - name: Run tk script
         run: python tk_min.py
