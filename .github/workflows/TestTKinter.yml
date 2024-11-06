@@ -23,9 +23,14 @@ jobs:
 
       - name: Set environment variables for Tkinter
         run: |
-          export TK_LIBRARY=$(brew --prefix)/lib
-          export TCL_LIBRARY=$(brew --prefix)/lib
-          export PYTHON_CONFIGURE_OPTS="--with-tcltk-includes='-I/usr/local/opt/tcl-tk/include' --with-tcltk-libs='-L/usr/local/opt/tcl-tk/lib -ltcl8.6 -ltk8.6' --enable-shared"
+          echo "TK_LIBRARY=$(brew --prefix tcl-tk)/lib" >> $GITHUB_ENV
+          echo "TCL_LIBRARY=$(brew --prefix tcl-tk)/lib" >> $GITHUB_ENV
+          echo "PYTHON_CONFIGURE_OPTS='--with-tcltk-includes=\"-I$(brew --prefix tcl-tk)/include\" --with-tcltk-libs=\"-L$(brew --prefix tcl-tk)/lib -ltcl8.6 -ltk8.6\" --enable-shared'" >> $GITHUB_ENV
+
+      - name: Install Python dependencies
+        run: |
+          python -m ensurepip
+          python -m pip install --upgrade pip
           
       - name: Run tk script
         run: python tk_min.py
