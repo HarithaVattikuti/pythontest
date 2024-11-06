@@ -19,7 +19,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
      
       - name: Install Tkinter
-        run: brew install python-tk@8.6
+        run: brew install python-tk@3.13
         
       - name: Run tk script
         run: python tk_min.py
