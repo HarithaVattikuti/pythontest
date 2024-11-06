@@ -25,6 +25,7 @@ jobs:
         run: |
           export TK_LIBRARY=$(brew --prefix)/lib
           export TCL_LIBRARY=$(brew --prefix)/lib
+          export PYTHON_CONFIGURE_OPTS="--with-tcltk-includes='-I/usr/local/opt/tcl-tk/include' --with-tcltk-libs='-L/usr/local/opt/tcl-tk/lib -ltcl8.6 -ltk8.6' --enable-shared"
           
       - name: Run tk script
         run: python tk_min.py
