@@ -17,11 +17,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: UnInstall Tkinter
-        run: brew uninstall python-tk || true
-
+     
       - name: Install Tkinter
-        run: brew install python-tk
+        run: brew install python-tk@8.6
         
       - name: Run tk script
         run: python tk_min.py
