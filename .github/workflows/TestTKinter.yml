@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
-        uses: HarithaVattikuti/setup-python@main
+        uses: HarithaVattikuti/setup-python@testtcl
         with:
           python-version: ${{ matrix.python-version }}
      
