@@ -12,7 +12,8 @@ jobs:
         os: ["macos-13"] #It already worked on "ubuntu-latest"
     runs-on: ${{matrix.os}}
     steps:
-    - uses: actions/setup-python@v5
+   # - uses: actions/setup-python@v5
+    - uses: HarithaVattikuti/setup-python@main
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install ncurses
