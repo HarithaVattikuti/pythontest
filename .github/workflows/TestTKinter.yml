@@ -20,10 +20,13 @@ jobs:
 
       - name: check tkinter
         run: python3 -c "import tkinter; print(tkinter.TkVersion)"
-        
-      # - name: Install Tkinter
-      #   run: brew install python-tk@3.13
-
+     
+      - name: Install Tkinter
+        run: brew install python-tk@3.12
+      
+      - name: check tkinter
+        run: python3 -c "import tkinter; print(tkinter.TkVersion)"
+     
       # - name: Set environment variables for Tkinter
       #   run: |
       #     echo "TK_LIBRARY=$(brew --prefix tcl-tk)/lib" >> $GITHUB_ENV
