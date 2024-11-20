@@ -1,0 +1,26 @@
+name: Run PowerShell Script
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up PowerShell
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Run PowerShell script
+        run: |
+          $versions = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/actions/python-versions/refs/heads/main/versions-manifest.json"
+          function HasBinary($Obj, $Arch, $PlatformVersion) { $found = $Obj.files | Where-Object { $_.arch -eq $Arch -and $_.platform_version -eq $PlatformVersion }; return $found -ne $null }
+          $ver2024 = $versions | Where-Object { HasBinary -Obj $_ -Arch "x64" -PlatformVersion "24.04" } | Select-Object -ExpandProperty version
+          $ver2022 = $versions | Where-Object { HasBinary -Obj $_ -Arch "x64" -PlatformVersion "22.04" } | Select-Object -ExpandProperty version
+          $diff = $ver2022 | Where-Object { $_ -notin $ver2024 }
+          echo $diff
+        shell: pwsh
