@@ -19,8 +19,22 @@ jobs:
         run: |
           $versions = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/actions/python-versions/refs/heads/main/versions-manifest.json"
           function HasBinary($Obj, $Arch, $PlatformVersion) { $found = $Obj.files | Where-Object { $_.arch -eq $Arch -and $_.platform_version -eq $PlatformVersion }; return $found -ne $null }
-          $ver2024 = $versions | Where-Object { HasBinary -Obj $_ -Arch "x64" -PlatformVersion "24.04" } | Select-Object -ExpandProperty version
-          $ver2022 = $versions | Where-Object { HasBinary -Obj $_ -Arch "x64" -PlatformVersion "22.04" } | Select-Object -ExpandProperty version
-          $diff = $ver2022 | Where-Object { $_ -notin $ver2024 }
-          echo $diff
+          # $ver2024 = $versions | Where-Object { HasBinary -Obj $_ -Arch "x64" -PlatformVersion "24.04" } | Select-Object -ExpandProperty version
+          # $ver2022 = $versions | Where-Object { HasBinary -Obj $_ -Arch "x64" -PlatformVersion "22.04" } | Select-Object -ExpandProperty version
+          # $diff = $ver2022 | Where-Object { $_ -notin $ver2024 }
+          # echo $diff
+          # Count the number of workflows running each version of Python 3.x
+          $pythonVersions = @{}
+          foreach ($version in $versions) {
+            if ($version.version -match "^3\..*") {
+              if (-not $pythonVersions.ContainsKey($version.version)) {
+                $pythonVersions[$version.version] = 0
+              }
+              $pythonVersions[$version.version]++
+            }
+          }
+          # Print the counts
+          foreach ($key in $pythonVersions.Keys) {
+            Write-Output "$key: $($pythonVersions[$key])"
+          }
         shell: pwsh
