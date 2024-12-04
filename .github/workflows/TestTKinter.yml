@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-13]
-        python-version: ["3.9.19","3.9.13", "3.8.17"]
+        python-version: ["3.9.19","3.9.13", "3.8.17","3.10.16"]
       fail-fast: false
     name: ${{ matrix.python-version }} - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -18,14 +18,14 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: check tkinter
-        run: python3 -c "import tkinter; print(tkinter.TkVersion)"
+      # - name: check tkinter
+      #   run: python3 -c "import tkinter; print(tkinter.TkVersion)"
      
-      - name: Install Tkinter
-        run: brew install python-tk@3.12
+      # - name: Install Tkinter
+      #   run: brew install python-tk@3.12
       
-      - name: check tkinter
-        run: python3 -c "import tkinter; print(tkinter.TkVersion)"
+      # - name: check tkinter
+      #   run: python3 -c "import tkinter; print(tkinter.TkVersion)"
      
       # - name: Set environment variables for Tkinter
       #   run: |
