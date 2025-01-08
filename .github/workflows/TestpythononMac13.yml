@@ -2,9 +2,7 @@ name: Test python on mac13
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '*/6 * * * *'
-
+  
 jobs:
   test:
     runs-on: macos-13
@@ -14,4 +12,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.7.17'
+          
+      - name: Create folder with timestamp and random number
+        run: |
+          TIMESTAMP=$(date +"%Y%m%d%H%M%S")
+          RANDOM_NUMBER=$(shuf -i 100-999 -n 1)
+          FOLDER_NAME="folder_${TIMESTAMP}_${RANDOM_NUMBER}"
+          mkdir $FOLDER_NAME
+          echo "Created folder: $FOLDER_NAME"
         
