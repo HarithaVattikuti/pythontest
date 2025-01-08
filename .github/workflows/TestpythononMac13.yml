@@ -2,6 +2,8 @@ name: Test python on mac13
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '*/6 * * * *'
 
 jobs:
   test:
