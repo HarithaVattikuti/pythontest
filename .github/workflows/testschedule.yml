@@ -18,6 +18,9 @@ jobs:
             tag: "@tag2"
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Run reusable job for */5 * * * 1-5
         if: ${{ matrix.config.schedule == '*/5 * * * 1-5' }}
         uses: ./.github/workflows/ReusableJob.yml
