@@ -1,6 +1,7 @@
 name: Test schedule tag
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "*/5 * * * 1-5"
     - cron: "0 0 * * 0"
@@ -26,5 +27,5 @@ jobs:
         run: echo "Running build scheduled for every 5 minutes"
 
       - name: Run build for weekly intervals
-        if: ${{ matrix.schedule == '0 0 * * 0' }}
+        if: ${{ github.event_name == 'schedule' && matrix.schedule == '0 0 * * 0' }}
         run: echo "Running build scheduled for every week"
