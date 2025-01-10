@@ -17,7 +17,7 @@ jobs:
           - schedule: "*/6 * * * *"
             tag: "@tag2"
           
-    if: github.event.schedule == '*/5 * * * 1-5'
+    if: ${{ matrix.config.schedule == '*/5 * * * 1-5' || matrix.config.schedule == '*/6 * * * *' }}
     uses: ./.github/workflows/ReusableJob.yml
     with:
       tags: ${{matrix.config.tag}}
