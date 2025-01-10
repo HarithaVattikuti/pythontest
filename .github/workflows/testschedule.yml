@@ -17,13 +17,12 @@ jobs:
           - schedule: "*/6 * * * *"
             tag: "@tag2"
 
-    if: ${{ github.event.schedule == matrix.config.schedule }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Run reusable job
+        if: ${{ matrix.config.schedule == github.event.schedule }}
         uses: ./.github/workflows/ReusableJob.yml
         with:
           tags: ${{ matrix.config.tag }}
