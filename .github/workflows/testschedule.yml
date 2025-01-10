@@ -8,19 +8,27 @@ on:
 
 jobs:
   scheduleJobs1:
+    runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
         config:
           - schedule: "*/5 * * * 1-5"
             tag: "@tag1"
           - schedule: "*/6 * * * *"
             tag: "@tag2"
-          
-    if: ${{ matrix.config.schedule == '*/5 * * * 1-5' || matrix.config.schedule == '*/6 * * * *' }}
-    uses: ./.github/workflows/ReusableJob.yml
-    with:
-      tags: ${{matrix.config.tag}}
+
+    steps:
+      - name: Run reusable job for */5 * * * 1-5
+        if: ${{ matrix.config.schedule == '*/5 * * * 1-5' }}
+        uses: ./.github/workflows/ReusableJob.yml
+        with:
+          tags: ${{ matrix.config.tag }}
+
+      - name: Run reusable job for */6 * * * *
+        if: ${{ matrix.config.schedule == '*/6 * * * *' }}
+        uses: ./.github/workflows/ReusableJob.yml
+        with:
+          tags: ${{ matrix.config.tag }}
 
   scheduleJobs2:
     strategy:
