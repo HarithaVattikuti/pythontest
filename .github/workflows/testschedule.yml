@@ -7,25 +7,32 @@ on:
     - cron: "*/6 * * * *"
 
 jobs:
-  scheduleJobs:
-    runs-on: ubuntu-latest
+  scheduleJobs1:
     strategy:
       fail-fast: false
       matrix:
-        include:
+        config:
           - schedule: "*/5 * * * 1-5"
             tag: "@tag1"
           - schedule: "*/6 * * * *"
             tag: "@tag2"
           
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    if: github.event.schedule == '*/5 * * * 1-5'
+    uses: ./.github/workflows/ReusableJob.yml
+    with:
+      tags: ${{matrix.config.tag}}
 
-      - name: Run build for 5-minute intervals
-        if: ${{github.event_name == 'schedule' && github.event.schedule == '*/5 * * * 1-5' }}
-        run: echo "Running build scheduled for every 5 minutes"
-
-      - name: Run build for weekly intervals
-        if: ${{ github.event_name == 'schedule' && matrix.schedule == '*/6 * * * *' }}
-        run: echo "Running build scheduled for every week"
+  scheduleJobs2:
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - schedule: "*/5 * * * 1-5"
+            tag: "@tag1"
+          - schedule: "*/6 * * * *"
+            tag: "@tag2"
+          
+    if: github.event.schedule == '*/6 * * * *'
+    uses: ./.github/workflows/ReusableJob.yml
+    with:
+      tags: ${{matrix.config.tag}}
