@@ -1,0 +1,30 @@
+name: Test schedule tag
+
+on:
+  schedule:
+    - cron: "*/5 * * * 1-5"
+    - cron: "0 0 * * 0"
+
+jobs:
+  scheduleJobs:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - schedule: "*/5 * * * 1-5"
+            tag: "@tag1"
+          - schedule: "0 0 * * 0"
+            tag: "@tag2"
+          
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run build for 5-minute intervals
+        if: ${{github.event_name == 'schedule' && github.event.schedule == '*/5 * * * 1-5' }}
+        run: echo "Running build scheduled for every 5 minutes"
+
+      - name: Run build for weekly intervals
+        if: ${{ matrix.schedule == '0 0 * * 0' }}
+        run: echo "Running build scheduled for every week"
