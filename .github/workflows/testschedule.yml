@@ -9,23 +9,24 @@ on:
 jobs:
   scheduleJobs1:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        config:
-          - schedule: "*/5 * * * 1-5"
-            tag: "@tag1"
-          - schedule: "*/6 * * * *"
-            tag: "@tag2"
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run reusable job
-        if: ${{ matrix.config.schedule == github.event.schedule }}
+      - name: Run reusable job every 5 mins
+        #if: ${{ matrix.config.schedule == github.event.schedule }}
+        if: github.event.schedule == '*/5 * * * 1-5'
         uses: ./.github/workflows/ReusableJob.yml
         with:
-          tags: ${{ matrix.config.tag }}
+          tags: "@tag1"
+
+      - name: Run reusable job every 6 mins
+        #if: ${{ matrix.config.schedule == github.event.schedule }}
+        if: github.event.schedule == '*/6 * * * *'
+        uses: ./.github/workflows/ReusableJob.yml
+        with:
+          tags: "@tag2"
 
   scheduleJobs2:
     strategy:
