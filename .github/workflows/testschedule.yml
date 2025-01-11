@@ -8,27 +8,18 @@ on:
 
 jobs:
   scheduleJobs1:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Run reusable job every 5 mins
-        #if: ${{ matrix.config.schedule == github.event.schedule }}
-        if: github.event.schedule == '*/5 * * * 1-5'
-        uses: ./.github/workflows/ReusableJob.yml
-        with:
-          tags: "@tag1"
-
-      - name: Run reusable job every 6 mins
-        #if: ${{ matrix.config.schedule == github.event.schedule }}
-        if: github.event.schedule == '*/6 * * * *'
-        uses: ./.github/workflows/ReusableJob.yml
-        with:
-          tags: "@tag2"
+      if: github.event.schedule == '*/5 * * * 1-5'
+      uses: ./.github/workflows/ReusableJob.yml
+      with:
+        tags: "@tag1"
 
   scheduleJobs2:
+      if: github.event.schedule == '*/6 * * * *'
+      uses: ./.github/workflows/ReusableJob.yml
+      with:
+        tags: "@tag2"
+
+  scheduleJobs3:
     strategy:
       fail-fast: false
       matrix:
