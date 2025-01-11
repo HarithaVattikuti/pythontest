@@ -8,13 +8,14 @@ on:
 
 jobs:
   scheduleJobs1:
-    if: github.event_name == 'schedule' && github.event.schedule == '*/5 * * * 1-5'
+    #if: github.event_name == 'schedule' && github.event.schedule == '*/5 * * * 1-5'
+    if: ${{github.event_name == 'schedule' && github.event.schedule == '*/5 * * * 1-5' }}
     uses: ./.github/workflows/ReusableJob.yml
     with:
       tags: "@tag1"
 
   scheduleJobs2:
-    if: github.event_name == 'schedule' && github.event.schedule == '*/6 * * * *'
+    if: ${{github.event_name == 'schedule' && github.event.schedule == '*/6 * * * *'}}
     uses: ./.github/workflows/ReusableJob.yml
     with:
       tags: "@tag2"
