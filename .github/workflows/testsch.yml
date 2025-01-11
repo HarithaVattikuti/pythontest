@@ -1,0 +1,26 @@
+name: Test schedule workflow
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * 1-5"
+    - cron: "*/6 * * * *"
+
+jobs:
+  scheduleJobs1:
+    if: ${{github.event_name == 'schedule' && github.event.schedule == '*/5 * * * 1-5' }}
+    uses: ./.github/workflows/ReusableJob.yml
+    with:
+      tags: "@tag1"
+
+  scheduleJobs2:
+    if: ${{github.event_name == 'schedule' && github.event.schedule == '*/6 * * * *'}}
+    uses: ./.github/workflows/ReusableJob.yml
+    with:
+      tags: "@tag2"
+
+  scheduleJobs3:
+    if: ${{github.event_name == 'workflow_dispatch'}}
+    uses: ./.github/workflows/ReusableJob.yml
+    with:
+      tags: "@tag3"
