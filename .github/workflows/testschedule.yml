@@ -8,27 +8,13 @@ on:
 
 jobs:
   scheduleJobs1:
-    if: ${{ github.event.schedule == '*/5 * * * 1-5' }}
+    if: github.event_name == 'schedule' && github.event.schedule == '*/5 * * * 1-5'
     uses: ./.github/workflows/ReusableJob.yml
     with:
       tags: "@tag1"
 
   scheduleJobs2:
-    if: ${{ github.event.schedule == '*/6 * * * *' }}
+    if: github.event_name == 'schedule' && github.event.schedule == '*/6 * * * *'
     uses: ./.github/workflows/ReusableJob.yml
     with:
       tags: "@tag2"
-  scheduleJobs3:
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          - schedule: "*/5 * * * 1-5"
-            tag: "@tag1"
-          - schedule: "*/6 * * * *"
-            tag: "@tag2"
-          
-    if: github.event.schedule == '*/6 * * * *'
-    uses: ./.github/workflows/ReusableJob.yml
-    with:
-      tags: ${{matrix.config.tag}}
