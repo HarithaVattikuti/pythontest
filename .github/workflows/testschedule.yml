@@ -2,9 +2,9 @@ name: Test schedule tag
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "*/5 * * * 1-5"
-    - cron: "*/6 * * * *"
+  #schedule:
+   # - cron: "*/5 * * * 1-5"
+    #- cron: "*/6 * * * *"
 
 jobs:
   scheduleJobs1:
