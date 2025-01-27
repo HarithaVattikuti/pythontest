@@ -1,0 +1,26 @@
+name: Test Alpha Python Versions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-freethreaded:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, macos-13, ubuntu-latest]
+        python-version:
+          - '3.14.0t-alpha.3'
+          - '3.14.0-alpha.3t'
+          - '3.14.0ta3'
+          - '3.14.0a1t'
+          - '3.14.0a3t'
+          
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+         # uses: actions/setup-python@v5
+        uses: priyagupta108/setup-python@test-pr-973
+        with:
+          python-version: ${{ matrix.python-version }}
