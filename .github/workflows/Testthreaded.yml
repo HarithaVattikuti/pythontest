@@ -9,13 +9,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest, macos-13, ubuntu-latest]
+        os: [macos-latest]
         python-version:
           - '3.14.0t-alpha.3'
           - '3.14.0-alpha.3t'
           - '3.14.0ta3'
           - '3.14.0a1t'
           - '3.14.0a3t'
+          - '3.14.t0-alpha.3'
+          - '3.14.t0a3'
           
     steps:
       - uses: actions/checkout@v4
