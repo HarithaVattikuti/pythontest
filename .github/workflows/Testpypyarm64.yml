@@ -71,7 +71,7 @@ jobs:
 
       - name: setup-python ${{ matrix.pypy }}
         id: setup-python
-        uses: ./
+        uses: mayeut/setup-python@pypy-aarch64
         with:
           python-version: ${{ matrix.pypy }}
 
