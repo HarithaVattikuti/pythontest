@@ -1,0 +1,32 @@
+
+name: Test pypy arm64
+
+on:  
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["pypy3.10"]
+        os: [
+          windows-latest,
+          macos-latest,
+          ubuntu-latest,
+          ubuntu-22.04-arm,
+          ubuntu-24.04-arm,
+        ]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Test
+        run: |
+          python --version --version
