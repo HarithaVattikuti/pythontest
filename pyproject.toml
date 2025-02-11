@@ -6,10 +6,13 @@ authors = ["HarithaVattikuti <73516759+HarithaVattikuti@users.noreply.github.com
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+#python = "^3.9"
+python = ">=3.8,<3.14"
 python101 = "^0.0.1"
 build = "^1.2.1"
 cffi = "^1.15.1"  # Add this line
+pyinstaller = "^6.11.0"
+pytest = "^8.3.3"
 
 
 [tool.poetry-dynamic-versioning.substitution]
