@@ -1,0 +1,26 @@
+name: Test Pyproject for freethreaded
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest,ubuntu-22.04, ubuntu-20.04, windows-latest, windows-2019, macos-13, macos-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        # uses: priyagupta108/setup-python@test-pr-973
+        uses: actions/setup-python@v5
+
+        with:
+          python-version-file: 'pyproject.toml' # Read python version from a file pyproject.toml
+          freethreaded: true
+      - name: Verify Python Version
+        run: |
+          python -VVV
