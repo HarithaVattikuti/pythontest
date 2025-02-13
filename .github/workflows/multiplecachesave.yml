@@ -26,5 +26,5 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: Reports
-          key: ${{ runner.os }}-report
+          key: ${{ github.run_id }}-report
       
