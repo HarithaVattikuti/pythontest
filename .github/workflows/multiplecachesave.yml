@@ -16,7 +16,7 @@ jobs:
       - name: Create File
         run: |
           mkdir -p Reports
-          echo "${{ inputs.os }}" >> Reports/${{ inputs.os }}
+          echo "Operating System is "${{ inputs.os }} >> Reports/${{ inputs.os }}
      
       - name: Cache dependencies
         uses: actions/cache@v4
