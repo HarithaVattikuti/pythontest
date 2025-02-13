@@ -1,7 +1,11 @@
 name: Multiple cache restore
 
 on:
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      os:
+        required: true
+        type: string
 
 jobs:
   restore-cache:
