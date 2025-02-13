@@ -1,0 +1,26 @@
+name: multiple cache save
+
+on:
+  workflow_dispatch:
+    inputs:
+      os:
+        required: true
+        type: string
+
+jobs:
+  save-cache:
+    runs-on: ${{ inputs.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create File
+        run: |
+          mkdir -p Reports
+          echo "${{ inputs.os }}" >> Reports/${{ inputs.os }}
+     
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/Reports
+          key: ${{ runner.os }}-report
+      
