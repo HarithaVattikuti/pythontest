@@ -5,36 +5,16 @@ on:
 
 jobs:
   call-workflow1:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-    steps:
-      - name: Trigger Workflow 1
-        uses: actions/github-script@v6
-        with:
-          script: |
-            github.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'multiplecachesave.yml',
-              ref: context.ref,
-              inputs: {
-                os: ${{ matrix.os }}
-              }
-            })
-
+    uses: ./.github/workflows/multiplecachesave.yml
+    with:
+      os: ${{ matrix.os }}
+            
   call-workflow2:
     needs: call-workflow1
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Workflow 2
-        uses: actions/github-script@v6
-        with:
-          script: |
-            github.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'MultipleCacheRestore.yml',
-              ref: context.ref
-            })
+    uses: ./.github/workflows/MultipleCacheRestore.yml
+    with:
+      os: ${{ matrix.os }}
+
