@@ -1,0 +1,17 @@
+name: Multiple cache restore
+
+on:
+  workflow_dispatch:
+
+jobs:
+  restore-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/Reports
+          key: ${{ runner.os }}-report
+          
