@@ -16,6 +16,6 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
-          path: ~/Reports
-          key: ${{ runner.os }}-report
+          path: Reports
+          key: ${{ github.run_id }}-report
           
