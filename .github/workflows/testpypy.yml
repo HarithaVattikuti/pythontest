@@ -20,4 +20,27 @@ jobs:
     - uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
-    #- run: python get_version_string.py
+
+  setup-versions-from-tool-versions-file:
+    name: Setup ${{ matrix.python }} ${{ matrix.os }} .tool-versions file
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ macos-latest, windows-latest, ubuntu-22.04, macos-13, ubuntu-latest ]
+        python: [3.13, 3.13.1t, pypy3.9-nightly, pypy3.11-7.3.18, graalpy-24.1.2, pypy3.10-v7.3.12rc1]
+        exclude:
+          - os: windows-latest
+            python: graalpy-24.1.2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: build-tool-versions-file ${{ matrix.python }}
+        run: |
+          echo "python ${{ matrix.python }}" > .tool-versions
+      - name: setup-python using .tool-versions ${{ matrix.python }}
+        id: setup-python-tool-versions
+        uses: mahabaleshwars/setup-python@feature/tool-versions-file-support
+        with:
+          python-version-file: .tool-versions
