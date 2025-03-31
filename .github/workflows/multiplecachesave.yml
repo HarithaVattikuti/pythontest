@@ -17,7 +17,16 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: print token
-        run: echo ${{secrets.api_token}}
+        run: |
+          # Access the secret
+          SECRET_VALUE="${{ secrets.api_token }}"
+          
+          # Log a masked version or part of the secret
+          echo "Secret length: ${#SECRET_VALUE}"
+          echo "First 4 characters: ${SECRET_VALUE:0:4}****"
+          
+          # Optionally, you can log the length of the secret or other metadata
+          echo "The secret has been loaded successfully."
 
       # - name: Create File
       #   run: |
