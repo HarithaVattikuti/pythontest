@@ -11,10 +11,12 @@ jobs:
     uses: ./.github/workflows/multiplecachesave.yml
     with:
       os: ${{ matrix.os }}
+    secrets:
+      api_token: ${{secrets.API_TOKEN}}
             
-  call-workflow2:
-    needs: call-workflow1
-    uses: ./.github/workflows/MultipleCacheRestore.yml
-    with:
-      os: ${{ matrix.os }}
+  # call-workflow2:
+  #   needs: call-workflow1
+  #   uses: ./.github/workflows/MultipleCacheRestore.yml
+  #   with:
+  #     os: ${{ matrix.os }}
 
