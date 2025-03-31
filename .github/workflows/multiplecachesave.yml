@@ -6,6 +6,9 @@ on:
       os:
         required: true
         type: string
+    secrets:
+      api_token :
+        required: true
 
 jobs:
   save-cache:
@@ -13,18 +16,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Create File
-        run: |
-          mkdir -p Reports
-          cd Reports
-          echo "Operating System is "${{ inputs.os }} >> ${{ inputs.os }}.txt
-          cd ..
-          ls
-          cat Reports/${{ inputs.os }}.txt
+      - name: print token
+        run: echo ${{secrets.api_token}}
+
+      # - name: Create File
+      #   run: |
+      #     mkdir -p Reports
+      #     cd Reports
+      #     echo "Operating System is "${{ inputs.os }} >> ${{ inputs.os }}.txt
+      #     cd ..
+      #     ls
+      #     cat Reports/${{ inputs.os }}.txt
      
-      - name: Cache dependencies
-        uses: actions/cache/save@v4
-        with:
-          path: Reports
-          key: ${{ github.run_id }}-report
+      # - name: Cache dependencies
+      #   uses: actions/cache/save@v4
+      #   with:
+      #     path: Reports
+      #     key: ${{ github.run_id }}-report
       
