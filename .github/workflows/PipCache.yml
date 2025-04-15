@@ -19,7 +19,7 @@ jobs:
             architecture: "x86"
           - os: "macos-latest"
             architecture: "arm64"
-          - os: "macos-12"
+          - os: "macos-13"
             architecture: "x64"
     defaults:
       run:
@@ -57,7 +57,7 @@ jobs:
             architecture: "x86"
           - os: "macos-latest"
             architecture: "arm64"
-          - os: "macos-12"
+          - os: "macos-13"
             architecture: "x64"
     defaults:
       run:
@@ -96,7 +96,7 @@ jobs:
             architecture: "x86"
           - os: "macos-latest"
             architecture: "arm64"
-          - os: "macos-12"
+          - os: "macos-13"
             architecture: "x64"
     defaults:
       run:
@@ -135,7 +135,7 @@ jobs:
             architecture: "x86"
           - os: "macos-latest"
             architecture: "arm64"
-          - os: "macos-12"
+          - os: "macos-13"
             architecture: "x64"
     defaults:
       run:
