@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  cachepip:
+  cachepipv5:
     strategy:
       fail-fast: false
       matrix:
@@ -36,7 +36,7 @@ jobs:
         #uses: Zxilly/setup-python@main
         id: setup-python
         with:
-          python-version: "3.10"
+          python-version: "3.12"
           architecture: ${{ matrix.target.architecture }}
           cache: "pip"
       - name: Install dependencies
@@ -44,7 +44,7 @@ jobs:
          python -m pip install --upgrade pip
          pip install -r requirements.txt
 
-  cachepipenv:
+  cachepipenvv5:
     strategy:
       fail-fast: false
       matrix:
@@ -78,9 +78,90 @@ jobs:
         uses: actions/setup-python@v5
         id: setup-python
         with:
-          python-version: "3.10"
+          python-version: "3.12"
           architecture: ${{ matrix.target.architecture }}
           cache: "pipenv"
       
       - name: Install dependencies
         run: pipenv install --dev
+
+  cachepipenvv4:
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - os: "windows-latest"
+            architecture: "x64"
+          - os: "ubuntu-latest"
+            architecture: "x64"
+          - os: "ubuntu-20.04"
+            architecture: "x64"
+          - os: "ubuntu-24.04"
+            architecture: "x64"
+          - os: "windows-latest"
+            architecture: "x86"
+          - os: "macos-latest"
+            architecture: "arm64"
+          - os: "macos-12"
+            architecture: "x64"
+    defaults:
+      run:
+        shell: bash
+    runs-on: ${{ matrix.target.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pipenv
+        run: pip install pipenv
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        id: setup-python
+        with:
+          python-version: "3.12"
+          architecture: ${{ matrix.target.architecture }}
+          cache: "pipenv"
+      
+      - name: Install dependencies
+        run: pipenv install --dev
+
+  cachepipv4:
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - os: "windows-latest"
+            architecture: "x64"
+          - os: "ubuntu-latest"
+            architecture: "x64"
+          - os: "ubuntu-20.04"
+            architecture: "x64"
+          - os: "ubuntu-24.04"
+            architecture: "x64"
+          - os: "windows-latest"
+            architecture: "x86"
+          - os: "macos-latest"
+            architecture: "arm64"
+          - os: "macos-12"
+            architecture: "x64"
+    defaults:
+      run:
+        shell: bash
+    runs-on: ${{ matrix.target.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        #uses: Zxilly/setup-python@main
+        id: setup-python
+        with:
+          python-version: "3.12"
+          architecture: ${{ matrix.target.architecture }}
+          cache: "pip"
+      - name: Install dependencies
+        run: |
+         python -m pip install --upgrade pip
+         pip install -r requirements.txt
