@@ -14,7 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
-        uses: HarithaVattikuti/setup-python@testtkinter
+        #uses: HarithaVattikuti/setup-python@testtkinter
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
