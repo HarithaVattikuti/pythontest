@@ -1,0 +1,10 @@
+name: Calling workflow
+
+on:
+  workflow_dispatch:
+  
+jobs:
+  call-reusable:
+    uses: HarithaVattikuti/java-test/.github/workflows/reusable.yml@main
+    secrets:
+      token: ${{ secrets.PAT }}
