@@ -64,12 +64,12 @@ jobs:
     outputs:
       json: ${{ steps.env-vars.outputs.env_vars }}
     steps:
+       - id: env-vars
+         uses: ideasorg/ideas-github-set-env-action@v0
       # - id: env-vars
-      #   uses: ideasorg/ideas-github-set-env-action@v0
-      - id: env-vars
-        run: |
-            echo "Setting environment variables manually."
-            echo 'env_vars={"MAIN_BRANCH":"false"}' >> $GITHUB_OUTPUT
+      #   run: |
+      #       echo "Setting environment variables manually."
+      #       echo 'env_vars={"MAIN_BRANCH":"false"}' >> $GITHUB_OUTPUT
 
   test_inline_job_with_steps:
     name: "Test inline Job made of inline steps"
