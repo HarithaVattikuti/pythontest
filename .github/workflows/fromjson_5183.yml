@@ -81,9 +81,9 @@ jobs:
       - name: Print using fromJson
         run: |
           echo "The reusable_action json output is: ${{ needs.reusable_action.outputs.json }}"
-          echo "RA -- MAIN_BRANCH: ${{ fromJson(needs.reusable_action.outputs.json).MAIN_BRANCH }}"
+          echo "RA -- MAIN_BRANCH: ${{ fromJson(needs.reusable_action.outputs.json || '{}').MAIN_BRANCH }}"
           echo "The inline_action json output is: ${{ needs.inline_action.outputs.json }}"
-          echo "IA -- MAIN_BRANCH: ${{ fromJson(needs.inline_action.outputs.json).MAIN_BRANCH }}"
+          echo "IA -- MAIN_BRANCH: ${{ fromJson(needs.inline_action.outputs.json || '{}').MAIN_BRANCH }}"
 
       - name: Another step
         run: |
@@ -95,7 +95,7 @@ jobs:
       - reusable_action
     uses: ./.github/workflows/Reusable_5183.yml
     with:
-      test: ${{ fromJson(needs.reusable_action.outputs.json).MAIN_BRANCH }}
+      test: ${{ fromJson(needs.reusable_action.outputs.json || '{}').MAIN_BRANCH }}
 
   test_reusable_workflow_call_2:
     name: "Test Reusable Workflow Call with Inline Action"
@@ -103,4 +103,4 @@ jobs:
       - inline_action
     uses: ./.github/workflows/Reusable_5183.yml
     with:
-      test: ${{ fromJson(needs.inline_action.outputs.json).MAIN_BRANCH }}
+      test: ${{ fromJson(needs.inline_action.outputs.json || '{}').MAIN_BRANCH }}
