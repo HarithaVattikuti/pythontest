@@ -89,7 +89,7 @@ jobs:
     name: "Test Reusable Workflow Call with Reusable Action"
     needs:
       - reusable_action
-    uses: ./.github/workflows/reusable_test.yml
+    uses: ./.github/workflows/Reusable_5183.yml
     with:
       test: ${{ fromJson(needs.reusable_action.outputs.json).MAIN_BRANCH }}
 
@@ -97,6 +97,6 @@ jobs:
     name: "Test Reusable Workflow Call with Inline Action"
     needs:
       - inline_action
-    uses: ./.github/workflows/reusable_test.yml
+    uses: ./.github/workflows/Reusable_5183.yml
     with:
       test: ${{ fromJson(needs.inline_action.outputs.json).MAIN_BRANCH }}
