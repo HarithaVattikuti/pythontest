@@ -1,0 +1,102 @@
+name: "fromJSON Issue Test Workflow"
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "main"
+  workflow_dispatch:
+    inputs:
+      trigger_issue:
+        description: "Sets up the workflow to trigger the issue"
+        required: false
+        type: boolean
+        default: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  first_step:
+    runs-on: "ubuntu-latest"
+    outputs:
+      changes: ${{ steps.detect_changes.outputs.changes }}
+    steps:
+      - name: Set default for trigger_issue
+        id: set_default
+        run: |
+          echo "Setting default value for trigger_issue input."
+          echo "inputs.trigger_issue = '${{ inputs.trigger_issue }}'"
+          echo "trigger_issue=${{ inputs.trigger_issue != false && 'true' || 'false' }}" >> $GITHUB_OUTPUT
+      - name: "Print trigger_issue value"
+        shell: bash
+        run: |
+          echo "The 'trigger_issue' is set to: ${{ steps.set_default.outputs.trigger_issue }}"
+      - name: "Generate fake changes detection"
+        id: detect_changes
+        shell: bash
+        run: |
+          echo "This is a fake change detection step."
+          echo "It simulates changes in the repository to trigger the workflow."
+          echo 'changes=["${{ steps.set_default.outputs.trigger_issue == 'true' && 'triggered' || 'not' }}"]' >> $GITHUB_OUTPUT
+
+  inline_action:
+    name: "Use inline action"
+    needs:
+      - first_step
+    if: ${{ contains(needs.first_step.outputs.changes, 'not') }}
+    runs-on: "ubuntu-latest"
+    outputs:
+      json: ${{ steps.env-vars.outputs.env_vars }}
+    steps:
+      - id: env-vars
+        run: |
+          echo "This is an inline action step."
+          echo 'env_vars={"MAIN_BRANCH":"false"}' >> $GITHUB_OUTPUT
+
+  reusable_action:
+    name: "Use separate reusable action"
+    needs:
+      - first_step
+    if: ${{ contains(needs.first_step.outputs.changes, 'not') }}
+    runs-on: "ubuntu-latest"
+    outputs:
+      json: ${{ steps.env-vars.outputs.env_vars }}
+    steps:
+      - id: env-vars
+        uses: ideasorg/ideas-github-set-env-action@v0
+
+  test_inline_job_with_steps:
+    name: "Test inline Job made of inline steps"
+    needs:
+      - reusable_action
+      - inline_action
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Print using fromJson
+        run: |
+          echo "The reusable_action json output is: ${{ needs.reusable_action.outputs.json }}"
+          echo "RA -- MAIN_BRANCH: ${{ fromJson(needs.reusable_action.outputs.json).MAIN_BRANCH }}"
+          echo "The inline_action json output is: ${{ needs.inline_action.outputs.json }}"
+          echo "IA -- MAIN_BRANCH: ${{ fromJson(needs.inline_action.outputs.json).MAIN_BRANCH }}"
+
+      - name: Another step
+        run: |
+          echo "This is another step in the workflow."
+
+  test_reusable_workflow_call_1:
+    name: "Test Reusable Workflow Call with Reusable Action"
+    needs:
+      - reusable_action
+    uses: ./.github/workflows/reusable_test.yml
+    with:
+      test: ${{ fromJson(needs.reusable_action.outputs.json).MAIN_BRANCH }}
+
+  test_reusable_workflow_call_2:
+    name: "Test Reusable Workflow Call with Inline Action"
+    needs:
+      - inline_action
+    uses: ./.github/workflows/reusable_test.yml
+    with:
+      test: ${{ fromJson(needs.inline_action.outputs.json).MAIN_BRANCH }}
