@@ -1,0 +1,37 @@
+name: Test user arch on Win
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Build and test
+    runs-on: windows-2019
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14.0-beta.2"]
+        architecture: ["x64", "x86"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: ${{ matrix.architecture }}
+          cache: pip
+          cache-dependency-path: .github/workflows/Test_1005.yml
+          check-latest: true
+
+      - name: Setup environment
+        run: |
+          python --version
+          pip --version
+          pip install --upgrade setuptools>=74 wheel
+          
