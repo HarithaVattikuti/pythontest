@@ -1,0 +1,30 @@
+name: Reusable 5183 test
+
+on:
+  workflow_call:
+    inputs:
+      test:
+        required: false
+        type: string
+        default: default
+      tf_vars_json_map:
+        required: false
+        type: string
+        default: '{"region": "us-east-1"}'
+
+
+permissions: read-all
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Pass input
+        uses: ./
+        with:
+          test: ${{ inputs.test }}
+          tf_vars_json_map: |
+            ${{ toJson(fromJson('{"region": "us-east-1", "env": "dev"}')) }}
