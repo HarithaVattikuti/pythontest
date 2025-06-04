@@ -4,67 +4,67 @@ on:
   workflow_dispatch:
 
 jobs:
-  Pathonmain:
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14.0-beta.2","3.14t-dev","3.13t"]
-        # os: ["windows-2019","windows-2022","windows-11-arm","windows-2025"]
-        os: ["windows-2019","windows-2022","windows-2025"]
-        architecture: ["x64", "x86"]
+  # Pathonmain:
+  #   runs-on: ${{ matrix.os }}
+  #   timeout-minutes: 20
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14.0-beta.2","3.14t-dev","3.13t"]
+  #       # os: ["windows-2019","windows-2022","windows-11-arm","windows-2025"]
+  #       os: ["windows-2019","windows-2022","windows-2025"]
+  #       architecture: ["x64", "x86"]
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v5
-        with:
-           python-version: ${{ matrix.python-version }}
-           architecture : ${{matrix.architecture}}
+  #     - name: Set up Python 3.12
+  #       uses: actions/setup-python@v5
+  #       with:
+  #          python-version: ${{ matrix.python-version }}
+  #          architecture : ${{matrix.architecture}}
           
           
-      - name: Install pyinstaller with --user flag
-        run: |
-          pip install pyinstaller --user
+  #     - name: Install pyinstaller with --user flag
+  #       run: |
+  #         pip install pyinstaller --user
         
-      - name: Verify installation
-        run: |
-          pyinstaller --version
-          echo $Env:PATH
+  #     - name: Verify installation
+  #       run: |
+  #         pyinstaller --version
+  #         echo $Env:PATH
 
-  Pathfix:
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14.0-beta.2","3.14t-dev","3.13t"]
-        # os: ["windows-2019","windows-2022","windows-11-arm","windows-2025"]
-        os: ["windows-2019","windows-2022","windows-2025"]
-        architecture: ["x64", "x86"]
+  # Pathfix:
+  #   runs-on: ${{ matrix.os }}
+  #   timeout-minutes: 20
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14.0-beta.2","3.14t-dev","3.13t"]
+  #       # os: ["windows-2019","windows-2022","windows-11-arm","windows-2025"]
+  #       os: ["windows-2019","windows-2022","windows-2025"]
+  #       architecture: ["x64", "x86"]
         
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      - name: Set up Python 3.12
-        uses: aparnajyothi-y/setup-python@update-install-path
-        with:
-           python-version: ${{ matrix.python-version }}
-           architecture : ${{matrix.architecture}}
+  #     - name: Set up Python 3.12
+  #       uses: aparnajyothi-y/setup-python@update-install-path
+  #       with:
+  #          python-version: ${{ matrix.python-version }}
+  #          architecture : ${{matrix.architecture}}
           
           
-      - name: Install pyinstaller with --user flag
-        run: |
-          pip install pyinstaller --user
+  #     - name: Install pyinstaller with --user flag
+  #       run: |
+  #         pip install pyinstaller --user
         
-      - name: Verify installation
-        run: |
-          pyinstaller --version
-          echo $Env:PATH
+  #     - name: Verify installation
+  #       run: |
+  #         pyinstaller --version
+  #         echo $Env:PATH
 
   # test:
   #   name: Build and test
@@ -94,3 +94,23 @@ jobs:
   #         pip --version
   #         pip install --upgrade setuptools>=74 wheel
           
+
+  test1fix:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["windows-2019","windows-11-arm"]
+        python-version: ["3.13","3.14t-dev"]
+        architecture: [x86-freethreaded, x64-freethreaded,arm64-freethreaded]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python ${{ matrix.python-version }} ${{ matrix.architecture }}
+        uses: aparnajyothi-y/setup-python@update-install-path
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: ${{ matrix.architecture }}
+      - name: Install with --user
+        run: |
+          python -m pip install --user pytest
+          pytest --version
