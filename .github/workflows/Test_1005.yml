@@ -21,9 +21,9 @@ jobs:
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
-        # with:
-        #   python-version: '3.12'
-        #   architecture : 'x86'
+        with:
+           python-version: ${{ matrix.python-version }}
+           architecture : ${{matrix.architecture}}
           
           
       - name: Install pyinstaller with --user flag
@@ -52,10 +52,9 @@ jobs:
 
       - name: Set up Python 3.12
         uses: aparnajyothi-y/setup-python@update-install-path
-        # uses: actions/setup-python@v5
-        # with:
-        #   python-version: '3.12'
-        #   architecture : 'x86'
+        with:
+           python-version: ${{ matrix.python-version }}
+           architecture : ${{matrix.architecture}}
           
           
       - name: Install pyinstaller with --user flag
