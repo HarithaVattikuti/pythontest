@@ -101,7 +101,7 @@ jobs:
       fail-fast: false
       matrix:
         os: ["windows-2019","windows-11-arm"]
-        python-version: ["3.13","3.14t-dev"]
+        python-version: ["3.13","3.14.0-beta.2"]
         architecture: [x86-freethreaded, x64-freethreaded,arm64-freethreaded]
     steps:
       - uses: actions/checkout@v4
