@@ -5,7 +5,15 @@ on:
 
 jobs:
   Pathonmain:
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14.0-beta.2","3.14t-dev","3.13t"]
+        # os: ["windows-2019","windows-2022","windows-11-arm","windows-2025"]
+        os: ["windows-2019","windows-2022","windows-2025"]
+        architecture: ["x64", "x86"]
 
     steps:
       - name: Checkout code
@@ -13,9 +21,9 @@ jobs:
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          architecture : 'x86'
+        # with:
+        #   python-version: '3.12'
+        #   architecture : 'x86'
           
           
       - name: Install pyinstaller with --user flag
@@ -28,8 +36,16 @@ jobs:
           echo $Env:PATH
 
   Pathfix:
-    runs-on: windows-latest
-
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14.0-beta.2","3.14t-dev","3.13t"]
+        # os: ["windows-2019","windows-2022","windows-11-arm","windows-2025"]
+        os: ["windows-2019","windows-2022","windows-2025"]
+        architecture: ["x64", "x86"]
+        
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -37,9 +53,9 @@ jobs:
       - name: Set up Python 3.12
         uses: aparnajyothi-y/setup-python@update-install-path
         # uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          architecture : 'x86'
+        # with:
+        #   python-version: '3.12'
+        #   architecture : 'x86'
           
           
       - name: Install pyinstaller with --user flag
