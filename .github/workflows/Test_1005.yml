@@ -66,33 +66,33 @@ jobs:
   #         pyinstaller --version
   #         echo $Env:PATH
 
-  # test:
-  #   name: Build and test
-  #   runs-on: windows-2022
-  #   timeout-minutes: 20
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14.0-beta.2"]
-  #       architecture: ["x64", "x86"]
+  test:
+    name: Build and test
+    runs-on: windows-2022
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.13","3.13.3","3.13.4"]
+        architecture: ["x64", "x86"]
 
-  #   steps:
-  #     - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-  #     - name: Set up Python ${{ matrix.python-version }}
-  #       uses: actions/setup-python@v5
-  #       with:
-  #         python-version: ${{ matrix.python-version }}
-  #         architecture: ${{ matrix.architecture }}
-  #         cache: pip
-  #         cache-dependency-path: .github/workflows/Test_1005.yml
-  #         check-latest: true
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: ${{ matrix.architecture }}
+          cache: pip
+          cache-dependency-path: .github/workflows/Test_1005.yml
+          check-latest: true
 
-  #     - name: Setup environment
-  #       run: |
-  #         python --version
-  #         pip --version
-  #         pip install --upgrade setuptools>=74 wheel
+      - name: Setup environment
+        run: |
+          python --version
+          pip --version
+          pip install --upgrade setuptools>=74 wheel
 
   testmain:
     runs-on: ${{matrix.os}}
@@ -100,19 +100,13 @@ jobs:
       fail-fast: false
       matrix:
         os: ["windows-2019","windows-11-arm","windows-latest"]
-        python-version: ["3.13","3.13.3","3.13.4","3.14.0-beta.2"]
-        arch: [x86-freethreaded, x64-freethreaded,arm64-freethreaded,x86,arm64]
+        python-version: ["3.13","3.13.3","3.13.4"]
+        arch: [x86,arm64]
         exclude:
-          - os: windows-11-arm
-            arch: x86-freethreaded
-          - os: windows-11-arm
-            arch: x64-freethreaded
           - os: windows-11-arm
             arch: x86
           - os: windows-2019
             arch: arm64
-          - os: windows-2019
-            arch: arm64-freethreaded
     steps:
       - uses: actions/checkout@v4
       - name: Setup Python ${{ matrix.python-version }} ${{ matrix.architecture }}
@@ -132,19 +126,14 @@ jobs:
       fail-fast: false
       matrix:
         os: ["windows-2019","windows-11-arm","windows-latest"]
-        python-version: ["3.13","3.13.3","3.13.4","3.14.0-beta.2"]
-        arch: [x86-freethreaded, x64-freethreaded,arm64-freethreaded,x86,arm64]
+        python-version: ["3.13","3.13.3","3.13.4"]
+        #arch: [x86-freethreaded, x64-freethreaded,arm64-freethreaded,x86,arm64]
+        arch: [x86,arm64]
         exclude:
-          - os: windows-11-arm
-            arch: x86-freethreaded
-          - os: windows-11-arm
-            arch: x64-freethreaded
           - os: windows-11-arm
             arch: x86
           - os: windows-2019
             arch: arm64
-          - os: windows-2019
-            arch: arm64-freethreaded
     steps:
       - uses: actions/checkout@v4
       - name: Setup Python ${{ matrix.python-version }} ${{ matrix.architecture }}
