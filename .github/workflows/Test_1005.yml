@@ -88,11 +88,17 @@ jobs:
           cache-dependency-path: .github/workflows/Test_1005.yml
           check-latest: true
 
-      - name: Setup environment
-        run: |
-          python --version
-          pip --version
-          pip install --upgrade setuptools>=74 wheel
+      # - name: Setup environment
+      #   run: |
+      #     python --version
+      #     pip --version
+      #     pip install --upgrade setuptools>=74 wheel
+    
+      - name: Install psutil
+        run: pip install psutil
+
+      - name: Show psutil version
+        run: python -c "import psutil; print(psutil.__version__)"
 
   testmain:
     runs-on: ${{matrix.os}}
@@ -101,11 +107,15 @@ jobs:
       matrix:
         os: ["windows-2019","windows-11-arm","windows-latest"]
         python-version: ["3.13","3.13.3","3.13.4"]
-        arch: [x86,arm64]
+        arch: [x64,x86,arm64]
         exclude:
           - os: windows-11-arm
             arch: x86
+          - os: windows-11-arm
+            arch: x64
           - os: windows-2019
+            arch: arm64
+          - os: windows-latest
             arch: arm64
     steps:
       - uses: actions/checkout@v4
@@ -119,6 +129,11 @@ jobs:
           python -m pip install --user pytest
           pytest --version
 
+      - name: Install psutil
+        run: pip install psutil
+
+      - name: Show psutil version
+        run: python -c "import psutil; print(psutil.__version__)"
 
   test1fix:
     runs-on: ${{matrix.os}}
@@ -128,11 +143,15 @@ jobs:
         os: ["windows-2019","windows-11-arm","windows-latest"]
         python-version: ["3.13","3.13.3","3.13.4"]
         #arch: [x86-freethreaded, x64-freethreaded,arm64-freethreaded,x86,arm64]
-        arch: [x86,arm64]
+        arch: [x86,arm64,x64]
         exclude:
           - os: windows-11-arm
             arch: x86
+          - os: windows-11-arm
+            arch: x64
           - os: windows-2019
+            arch: arm64
+          - os: windows-latest
             arch: arm64
     steps:
       - uses: actions/checkout@v4
