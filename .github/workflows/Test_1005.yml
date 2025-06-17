@@ -10,7 +10,7 @@ jobs:
   #   strategy:
   #     fail-fast: false
   #     matrix:
-  #       python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14.0-beta.2","3.14t-dev","3.13t"]
+  #       python-version: ["3.9", "3.10", "3.11", "3.12", "3.13","3.13.4" "3.14.0-beta.2","3.14t-dev","3.13t"]
   #       # os: ["windows-2019","windows-2022","windows-11-arm","windows-2025"]
   #       os: ["windows-2019","windows-2022","windows-2025"]
   #       architecture: ["x64", "x86"]
@@ -99,8 +99,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["windows-2019","windows-11-arm"]
-        python-version: ["3.13","3.14.0-beta.2"]
+        os: ["windows-2019","windows-11-arm","windows-latest"]
+        python-version: ["3.13","3.13.3","3.13.4","3.14.0-beta.2"]
         arch: [x86-freethreaded, x64-freethreaded,arm64-freethreaded,x86,arm64]
         exclude:
           - os: windows-11-arm
@@ -131,8 +131,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["windows-2019","windows-11-arm"]
-        python-version: ["3.13","3.14.0-beta.2"]
+        os: ["windows-2019","windows-11-arm","windows-latest"]
+        python-version: ["3.13","3.13.3","3.13.4","3.14.0-beta.2"]
         arch: [x86-freethreaded, x64-freethreaded,arm64-freethreaded,x86,arm64]
         exclude:
           - os: windows-11-arm
