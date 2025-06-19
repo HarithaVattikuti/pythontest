@@ -1,0 +1,17 @@
+name: Test Setup pip parameter
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  windows-pip-test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: priyagupta108/setup-python/@pip-version-input  # local action with the new pip-version logic
+        with:
+          python-version: '3.11'
+          pip-version: '23.3.1'
+      - name: Check pip version
+        run: python -m pip --version
