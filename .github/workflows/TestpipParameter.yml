@@ -4,19 +4,36 @@ on:
   workflow_dispatch:
 
 jobs:
-  windows-pip-test:
+  # windows-pip-test:
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       os: [windows-latest, ubuntu-latest, macos-latest, macos-13,'windows-11-arm','ubuntu-24.04-arm','ubuntu-22.04-arm']
+  #       python-version: ['pypy3.11','3.11','graalpy-24.2.1']
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Set up Python
+  #       uses: priyagupta108/setup-python/@pip-version-input  # local action with the new pip-version logic
+  #       with:
+  #         python-version: '${{ matrix.python-version }}'
+  #         pip-version: '23.3.1'
+  #     - name: Check pip version
+  #       run: python -m pip --version
+
+  windows-pip-test1:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest, macos-13,'windows-11-arm','ubuntu-24.04-arm','ubuntu-22.04-arm']
-        python-version: ['pypy3.11','3.11','graalpy-24.2.1']
+        os: [windows-latest]
+        python-version: [3.11]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
         uses: priyagupta108/setup-python/@pip-version-input  # local action with the new pip-version logic
         with:
           python-version: '${{ matrix.python-version }}'
-          pip-version: '23.3.1'
+          pip-version: '23.3.1 && echo upgrade'
       - name: Check pip version
         run: python -m pip --version
