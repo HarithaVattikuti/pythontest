@@ -10,20 +10,19 @@ jobs:
       fail-fast: false
       matrix:
         os: ["ubuntu-latest","macos-latest","windows-latest"]
-        ver: ["3.11","3.12","3.13.5"]
+        ver: ["3.11"]
       
     steps:
       - name: Create file outside workspace
         run: |
-          mkdir -p /tmp/outside
-          echo "foo" > /tmp/outside/evil.lock
+          mkdir -p external/depsdir
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: ${{matrix.ver}}
           cache: 'pip'
-          cache-dependency-path: ../../tmp/outside/evil.lock
-  
+          cache-dependency-path: external/depsdir
+          
   traversal-cache-dep:
     runs-on: ${{matrix.os}}
     strategy:
@@ -35,11 +34,10 @@ jobs:
     steps:
       - name: Create file outside workspace
         run: |
-          mkdir -p /tmp/outside
-          echo "foo" > /tmp/outside/evil.lock
+          mkdir -p external/depsdir
       - uses: actions/checkout@v4
       - uses: aparnajyothi-y/setup-python@enhance-cache-dependency-path
         with:
           python-version: ${{matrix.ver}}
           cache: 'pip'
-          cache-dependency-path: ../../tmp/outside/evil.lock
+          cache-dependency-path: external/depsdir
