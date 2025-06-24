@@ -1,0 +1,45 @@
+name: Test Cache Dependency PR 1128
+
+on:
+  workflow_dispatch:
+
+jobs:
+  traversal-cache-deponmain:
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest","macos-latest","windows-latest"]
+        ver: ["3.11","3.12","3.13.5"]
+      
+    steps:
+      - name: Create file outside workspace
+        run: |
+          mkdir -p /tmp/outside
+          echo "foo" > /tmp/outside/evil.lock
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{matrix.ver}}
+          cache: 'pip'
+          cache-dependency-path: ../../tmp/outside/evil.lock
+  
+  traversal-cache-dep:
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest","macos-latest","windows-latest"]
+        ver: ["3.11","3.12","3.13.5"]
+      
+    steps:
+      - name: Create file outside workspace
+        run: |
+          mkdir -p /tmp/outside
+          echo "foo" > /tmp/outside/evil.lock
+      - uses: actions/checkout@v4
+      - uses: aparnajyothi-y/setup-python@enhance-cache-dependency-path
+        with:
+          python-version: ${{matrix.ver}}
+          cache: 'pip'
+          cache-dependency-path: ../../tmp/outside/evil.lock
