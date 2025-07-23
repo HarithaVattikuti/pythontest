@@ -29,10 +29,10 @@ jobs:
         python-version: [3.13.2, 3.13t, 3.14t-dev]
     steps:
     - uses: actions/checkout@v4
-    - name: build-version-file ${{ matrix.python }}
+    - name: build-version-file ${{ matrix.python-version }}
       run: |
         echo '[requires]
-        python_full_version = "${{ matrix.python }}"
+        python_full_version = "${{ matrix.python-version }}"
         ' > Pipfile
     - uses: aradkdj/setup-python@feature/add-version-parsing-from-Pipfile
       with:
