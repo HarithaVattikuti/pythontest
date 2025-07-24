@@ -4,21 +4,21 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-latest, windows-latest, ubuntu-22.04] #, ubuntu-22.04-arm, macos-13, ubuntu-latest, ubuntu-24.04-arm]
-        python-version: [3.13.2, 3.13t, 3.14t-dev]
-    steps:
-    - uses: actions/checkout@v4
-    - name: build-version-file
-      run: echo "" > Pipfile
-    - uses: aradkdj/setup-python@feature/add-version-parsing-from-Pipfile
-      with:
-        #python-version: ${{ matrix.python-version }}
-        python-version-file: Pipfile
+  # build:
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       os: [macos-latest, windows-latest, ubuntu-22.04] #, ubuntu-22.04-arm, macos-13, ubuntu-latest, ubuntu-24.04-arm]
+  #       python-version: [3.13.2, 3.13t, 3.14t-dev]
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #   - name: build-version-file
+  #     run: echo "" > Pipfile
+  #   - uses: aradkdj/setup-python@feature/add-version-parsing-from-Pipfile
+  #     with:
+  #       #python-version: ${{ matrix.python-version }}
+  #       python-version-file: Pipfile
 
   buildonpipfile:
     runs-on: ${{ matrix.os }}
@@ -26,7 +26,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, windows-latest, ubuntu-22.04] #, ubuntu-22.04-arm, macos-13, ubuntu-latest, ubuntu-24.04-arm]
-        python-version: [3.13.2, 3.13t, 3.14t-dev]
+        python-version: ["3.13.2", "3.13t", "3.14t-dev", ">=3.11"]
     steps:
     - uses: actions/checkout@v4
     - name: build-version-file ${{ matrix.python-version }}
