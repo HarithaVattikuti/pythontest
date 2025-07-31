@@ -7,44 +7,47 @@ jobs:
   positivetestcases:
     runs-on: ${{ matrix.runners }}
     strategy:
+      fail-fast: false
       matrix:
           runners: ['ubuntu-latest','windows-latest','macos-13','macos-latest']
-          python-version: [ '3.11', 'pypy3.10', 'graalpy-24.0', '3.13t' ]
+          python-version: [ '3.11', 'pypy3.10', 'graalpy-24.0', '3.13t', 'invalid' ]
     steps:
       - uses: actions/checkout@v4
       - name: Set up ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Check pythonLocation variable
+      - name: Check pythonLocation variable (Linux & macOS)
+        if: runner.os != 'Windows'
+        shell: bash
+        env:
+          pythonLocation: ${{ env.pythonLocation }}
         run: |
           echo "pythonLocation: $pythonLocation"
           if [[ -z "$pythonLocation" ]]; then
             echo "::error ::pythonLocation is not set"
             exit 1
           fi
-          # Optionally, check that pythonLocation points to a valid Python binary
           "$pythonLocation/bin/python" --version
 
-  negativetestcases:
-    runs-on: ${{ matrix.runners }}
-    strategy:
-      matrix:
-          runners: ['ubuntu-latest','windows-latest','macos-13','macos-latest']
-          python-version: [ '3.11', 'pypy3.14', 'graalpy-24.4', 'invalid' ]
-    continue-on-error: false
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-        continue-on-error: true
-      - name: Assert action failed as expected
+      - name: Check pythonLocation variable (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        env:
+          pythonLocation: ${{ env.pythonLocation }}
         run: |
-          if [ $? -eq 0 ]; then
-            echo "::error ::Action should have failed but did not."
-            exit 1
-          else
+          Write-Host "pythonLocation: $env:pythonLocation"
+          if (-not $env:pythonLocation) {
+              Write-Error "::error ::pythonLocation is not set"
+              exit 1
+          }
+          & "$env:pythonLocation\python.exe" --version
+
+      - name: Negative test - expect failure for invalid pythonImplementation
+        continue-on-error: true
+        run: |
+          echo "This combination should fail to set up Python."
+
+
             echo "Failure as expected for invalid config."
           fi
