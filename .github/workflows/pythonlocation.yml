@@ -12,8 +12,8 @@ jobs:
           python-version: [ '3.11', 'pypy3.10', 'graalpy-24.0', '3.13t' ]
     steps:
       - uses: actions/checkout@v4
-      - name: Set up ${{ matrix.python-implementation }} ${{ matrix.python-version }}
-        uses: ./
+      - name: Set up ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Check pythonLocation variable
@@ -31,12 +31,12 @@ jobs:
     strategy:
       matrix:
           runners: ['ubuntu-latest','windows-latest','macos-13','macos-latest']
-          python-version: [ '3.11', 'pypy3.12', 'graalpy-24.0', 'invalid' ]
+          python-version: [ '3.11', 'pypy3.14', 'graalpy-24.4', 'invalid' ]
     continue-on-error: false
     steps:
       - uses: actions/checkout@v4
-      - name: Set up ${{ matrix.python-implementation }} ${{ matrix.python-version }}
-        uses: ./
+      - name: Set up ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
         continue-on-error: true
