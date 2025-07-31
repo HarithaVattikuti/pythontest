@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
           runners: ['ubuntu-latest','windows-latest','macos-13','macos-latest']
-          python-version: [ '3.11', 'pypy3.10', 'graalpy-24', '3.13t' ]
+          python-version: [ '3.11', 'pypy3.10','pypy3.11', 'graalpy-24', '3.13t' ]
     steps:
       - uses: actions/checkout@v4
       - name: Set up ${{ matrix.python-version }}
