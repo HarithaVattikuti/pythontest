@@ -47,25 +47,9 @@ jobs:
         shell: bash
         run: |
           echo "pythonLocation: $pythonLocation"
-          if [[ "${{ matrix.python-version }}" != "pypy3.10" || "${{ matrix.python-implementation }}" != "graalpy-24" ]]; then
-            # On Windows, the executable will be python.exe
-            echo "pypy/graalpy"
-            if [[ "$RUNNER_OS" == "Windows" ]]; then
-              echo "pythonLocation/python: $pythonLocation/python.exe"
-              if [ ! -f "$pythonLocation/python.exe" ]; then
-                echo "::error ::CPython should have python.exe at root of pythonLocation"
-                exit 1
-              fi
-            else
-              echo "pythonLocation/bin/python: $pythonLocation/bin/python"
-              echo "pythonLocation/python: $pythonLocation/python"
-              if [ ! -f "$pythonLocation/bin/python" ] && [ ! -f "$pythonLocation/python" ]; then
-                echo "::error ::CPython should have python or python binary at root/bin of pythonLocation"
-                exit 1
-              fi
-            fi
-          else
+          if [[ "${{ matrix.python-version }}" == "pypy3.10" || "${{ matrix.python-version }}" == "graalpy-24" ]]; then
             # PyPy and GraalPy should NOT have python executable at the root
+            echo "pypy/graalpy"
             if [[ "$RUNNER_OS" == "Windows" ]]; then
               echo "pythonLocation/python: $pythonLocation/python.exe"
               if [ -f "$pythonLocation/python.exe" ]; then
@@ -80,4 +64,20 @@ jobs:
                 exit 1
               fi
             fi
+          else
+            # On Windows, the executable will be python.exe
+            if [[ "$RUNNER_OS" == "Windows" ]]; then
+              echo "pythonLocation/python: $pythonLocation/python.exe"
+              if [ ! -f "$pythonLocation/python.exe" ]; then
+                echo "::error ::CPython should have python.exe at root of pythonLocation"
+                exit 1
+              fi
+            else
+              echo "pythonLocation/bin/python: $pythonLocation/bin/python"
+              echo "pythonLocation/python: $pythonLocation/python"
+              if [ ! -f "$pythonLocation/bin/python" ] && [ ! -f "$pythonLocation/python" ]; then
+                echo "::error ::CPython should have python or python binary at root/bin of pythonLocation"
+                exit 1
+              fi
+            fi           
           fi
