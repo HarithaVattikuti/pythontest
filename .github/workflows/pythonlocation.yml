@@ -62,6 +62,7 @@ jobs:
               echo "pythonLocation/bin/python: $pythonLocation/bin/python"
               echo "pythonLocation/python: $pythonLocation/python"
               ls -al "$pythonLocation"
+              ls -al "$pythonLocation/bin"
               if [ -f "$pythonLocation/bin/python" ] || [ -f "$pythonLocation/python" ]; then
                 echo "::error ::PyPy/GraalPy should NOT have python or python binary at root/bin of pythonLocation"
                 exit 1
