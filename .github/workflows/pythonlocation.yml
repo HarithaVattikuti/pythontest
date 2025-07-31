@@ -49,6 +49,7 @@ jobs:
           echo "pythonLocation: $pythonLocation"
           if [[ "${{ matrix.python-version }}" != "pypy3.10" || "${{ matrix.python-implementation }}" != "graalpy-24" ]]; then
             # On Windows, the executable will be python.exe
+            echo "pypy/graalpy"
             if [[ "$RUNNER_OS" == "Windows" ]]; then
               echo "pythonLocation/python: $pythonLocation/python.exe"
               if [ ! -f "$pythonLocation/python.exe" ]; then
