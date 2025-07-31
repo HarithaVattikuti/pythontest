@@ -47,7 +47,7 @@ jobs:
         shell: bash
         run: |
           echo "pythonLocation: $pythonLocation"
-          if [[ "${{ matrix.python-version }}" == "pypy3.10" || "${{ matrix.python-version }}" == "graalpy-24" || "${{ matrix.python-version }}" == "pypy3.11"]]; then
+          if [[ "${{ matrix.python-version }}" == "pypy3.10" || "${{ matrix.python-version }}" == "graalpy-24" || "${{ matrix.python-version }}" == "pypy3.11" ]]; then
             # PyPy and GraalPy should NOT have python executable at the root
             echo "pypy/graalpy"
                   
