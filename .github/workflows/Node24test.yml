@@ -37,7 +37,7 @@ jobs:
       - name: Use PR branch of setup-python
         uses: salmanmkc/setup-python@node24
         with:
-          python-version: 3.12
+          python-version: "3.11"
 
       - name: Confirm Python version
         run: python --version
@@ -48,32 +48,6 @@ jobs:
           echo "npm version:"
           npm -v
 
-  node-compatibility:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [20.x, 24.x]
-        os: [ubuntu-latest, ubuntu-22.04, macos-latest, macos-13, windows-latest]
-
-    name: Test on Node.js ${{ matrix.node-version }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: salmanmkc/setup-node@node24
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: npm
-          cache-dependency-path : requirements.txt
-        
-      - name: Confirm Node version
-        run: |
-          echo "Node version:"
-          node -v
-          echo "npm version:"
-          npm -v
-
       - name: Install dependencies
         run: npm install
+        
