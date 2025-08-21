@@ -45,6 +45,7 @@ jobs:
   buildpipenv:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: ["windows-latest","ubuntu-latest","macos-13","macos-latest","windows-11-arm","ubuntu-22.04-arm"]
 
@@ -54,6 +55,6 @@ jobs:
       - name: Set up Python
         uses: aparnajyothi-y/setup-python@update-error-to-warning
         with:
-          python-version: "3.9"
+          python-version: "3.12"
           cache: "pipenv"
 
