@@ -58,3 +58,19 @@ jobs:
           python-version: "3.12"
           cache: "pipenv"
 
+  buildpipenvmain:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["windows-latest","ubuntu-latest","macos-13","macos-latest","windows-11-arm","ubuntu-22.04-arm"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pipenv"
+
