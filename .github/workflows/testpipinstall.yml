@@ -13,7 +13,8 @@ jobs:
         uses: actions/checkout@v5 
         
       - name: Remove WindowsApps from PATH
-        if: runner.os == 'Windows'        
+        if: runner.os == 'Windows'     
+        shell: pwsh
         run: |
             echo "PATH=${PATH//C:\\Users\\runneradmin\\AppData\\Local\\Microsoft\\WindowsApps;}" >> $env:GITHUB_ENV
             
