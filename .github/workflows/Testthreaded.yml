@@ -4,6 +4,23 @@ on:
   workflow_dispatch:
 
 jobs:
+  test:
+    name: ${{ matrix.os }} / ${{ matrix.python_version }}
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [Ubuntu, Windows, macOS]
+        python_version: ["3.14"]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "${{ matrix.python_version }}"
+          allow-prereleases: true
+      - run: pipx run nox --error-on-missing-interpreters -s tests-${{ matrix.python_version }}
+      
   test-freethreaded:
     runs-on: ${{ matrix.os }}
     strategy:
