@@ -11,32 +11,11 @@ jobs:
       matrix:
         os: [ macos-latest, windows-latest, ubuntu-22.04, macos-13, ubuntu-22.04-arm]
         python-version:
-        - 'graalpy-24.0'
-        - 'graalpy-24.1.x'
+        - 'graalpy-24.1.0'
     steps:
     - uses: actions/checkout@v5
     - uses: timfel/setup-python@tim/graalpy-windows-ea
       with:
         python-version: ${{ matrix.python-version }}
 
-  setup-versions-from-tool-versions-file:
-    name: Setup ${{ matrix.python }} ${{ matrix.os }} .tool-versions file
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ windows-latest]
-        python: [ 'graalpy-24.1.2', 'graalpy-24.1.x']
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: build-tool-versions-file ${{ matrix.python }}
-        run: |
-          echo "python ${{ matrix.python }}" > .tool-versions
-      - name: setup-python using .tool-versions ${{ matrix.python }}
-        id: setup-python-tool-versions
-        uses: timfel/setup-python@tim/graalpy-windows-ea
-        with:
-          python-version-file: .tool-versions
+ 
