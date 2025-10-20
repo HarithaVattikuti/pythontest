@@ -9,10 +9,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-latest, windows-latest, ubuntu-22.04, macos-13, ubuntu-22.04-arm, windows-11-arm ]
+        os: [ macos-latest, windows-latest, ubuntu-22.04, macos-13, ubuntu-22.04-arm]
         python-version:
         - 'graalpy-24.0'
-        - 'graalpy-26.0.0-ea.13'
+        - 'graalpy-26.0'
     steps:
     - uses: actions/checkout@v5
     - uses: timfel/setup-python@tim/graalpy-windows-ea
@@ -26,7 +26,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ windows-latest]
-        python: [ 'graalpy-24.1.2', 'graalpy-26.0.0-ea.13']
+        python: [ 'graalpy-24.1.2', 'graalpy-26.0']
 
     steps:
       - name: Checkout
