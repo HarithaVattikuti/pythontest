@@ -4,26 +4,21 @@ on:
   workflow_dispatch:
 
 jobs:
-  install-python-arm64:
+  install-python-x64:
     runs-on: windows-latest
     steps:
-      - name: Download Python 3.12.10 amd64 installer
+      - name: Download Python 3.12.10 x64 installer
         run: |
           curl -O https://www.python.org/ftp/python/3.12.10/python-3.12.10-amd64.exe
-          # List files to verify download
           dir
 
-      - name: Install Python 3.12.10 amd64
+      - name: Install Python 3.12.10 x64 for current user (no elevation)
         shell: pwsh
         run: |
           $installer = "python-3.12.10-amd64.exe"
           $installerPath = Join-Path $PWD $installer
-          $installDir = "C:\Python312"
-          if (!(Test-Path $installerPath)) {
-            Write-Error "Installer file $installerPath not found."
-            exit 1
-          }
-          & $installerPath /quiet InstallAllUsers=1 TargetDir=$installDir
+          $userPythonDir = "$env:USERPROFILE\AppData\Local\Programs\Python\Python312"
+          & $installerPath /quiet InstallLauncherAllUsers=0 TargetDir="$userPythonDir"
           if ($LASTEXITCODE -ne 0) {
             Write-Error "Python installer failed with exit code $LASTEXITCODE"
             exit 1
@@ -32,7 +27,7 @@ jobs:
       - name: Check Python Installation
         shell: pwsh
         run: |
-          $pythonExe = "C:\Python312\python.exe"
+          $pythonExe = "$env:USERPROFILE\AppData\Local\Programs\Python\Python312\python.exe"
           if (Test-Path $pythonExe) {
             Write-Host "Python executable found at $pythonExe"
             & $pythonExe --version
