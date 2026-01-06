@@ -9,13 +9,13 @@ jobs:
     steps:
       - name: Download Python Embedded Distribution
         run: |
-          curl -LO https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-arm64.zip
+          curl -LO https://www.python.org/ftp/python/3.12.10/python-3.12.10-arm64.zip
           dir
 
       - name: Extract Python Embedded
         shell: pwsh
         run: |
-          $zip = "python-3.12.10-embed-arm64.zip"
+          $zip = "python-3.12.10-arm64.zip"
           $target = "$PWD\python312-embed"
           Expand-Archive -Path $zip -DestinationPath $target
           Write-Host "Extracted to: $target"
