@@ -1,47 +1,33 @@
 name: Manual Install Python 3.12.10 x64
-
 on:
   workflow_dispatch:
 
 jobs:
-  install-python-x64:
+  python-embedded:
     runs-on: windows-latest
     steps:
-      - name: Download Python 3.12.10 x64 installer
+      - name: Download Python Embedded Distribution
         run: |
-          curl -O https://www.python.org/ftp/python/3.12.10/python-3.12.10-amd64.exe
+          curl -LO https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip
           dir
 
-      - name: Install Python 3.12.10 x64 (per-user, no path)
+      - name: Extract Python Embedded
         shell: pwsh
         run: |
-          $installer = "python-3.12.10-amd64.exe"
-          $installerPath = Join-Path $PWD $installer
-          & $installerPath /quiet InstallAllUsers=0 PrependPath=1 Include_test=0
-          $exitcode = $LASTEXITCODE
-          Write-Host "Installer exit code: $exitcode"
-          if ($exitcode -ne 0) {
-            Write-Error "Python installer failed with exit code $exitcode"
-            exit 1
-          }
+          $zip = "python-3.12.10-embed-amd64.zip"
+          $target = "$PWD\python312-embed"
+          Expand-Archive -Path $zip -DestinationPath $target
+          Write-Host "Extracted to: $target"
+          dir $target
 
-      - name: Verify Python Installation via PATH
+      - name: Check Python Embedded
         shell: pwsh
         run: |
-          Write-Host "Checking Python via system PATH"
-          $pycmd = Get-Command python -ErrorAction SilentlyContinue
-          if ($null -eq $pycmd) {
-            Write-Error "python.exe not found in PATH."
-            # Additional search for manual install path:
-            $possible = "$env:USERPROFILE\AppData\Local\Programs\Python\Python312\python.exe"
-            if (Test-Path $possible) {
-              Write-Host "Manually found python.exe at $possible"
-              & $possible --version
-            } else {
-              Write-Error "Python was not installed in default location."
-              exit 1
-            }
+          $pythonExe = "$PWD\python312-embed\python.exe"
+          if (Test-Path $pythonExe) {
+            Write-Host "Python executable found at $pythonExe"
+            & $pythonExe --version
           } else {
-            Write-Host "Found python.exe: $($pycmd.Source)"
-            & $pycmd.Source --version
+            Write-Error "Embedded Python not found."
+            exit 1
           }
