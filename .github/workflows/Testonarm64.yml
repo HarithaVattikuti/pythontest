@@ -5,18 +5,18 @@ on:
 
 jobs:
   install-python-arm64:
-    runs-on: windows-11-arm
+    runs-on: windows-latest
     steps:
-      - name: Download Python 3.12.10 arm64 installer
+      - name: Download Python 3.12.10 amd64 installer
         run: |
-          curl -O https://www.python.org/ftp/python/3.12.10/python-3.12.10-arm64.exe
+          curl -O https://www.python.org/ftp/python/3.12.10/python-3.12.10-amd64.exe
           # List files to verify download
           dir
 
-      - name: Install Python 3.12.10 arm64
+      - name: Install Python 3.12.10 amd64
         shell: pwsh
         run: |
-          $installer = "python-3.12.10-arm64.exe"
+          $installer = "python-3.12.10-amd64.exe"
           $installerPath = Join-Path $PWD $installer
           $installDir = "C:\Python312"
           if (!(Test-Path $installerPath)) {
