@@ -1,0 +1,53 @@
+name: Manual Install Python 3.12.10 x64
+
+on:
+  workflow_dispatch:
+
+jobs:
+  install-python-x64:
+    runs-on: windows-latest
+    steps:
+      - name: Download Python 3.12.10 x64 installer
+        run: |
+          curl -O https://www.python.org/ftp/python/3.12.10/python-3.12.10-amd64.exe
+          dir
+
+      - name: Install Python 3.12.10 x64 (per-user, debug log)
+        shell: pwsh
+        run: |
+          $installer = "python-3.12.10-amd64.exe"
+          $installerPath = Join-Path $PWD $installer
+          $target = "$env:USERPROFILE\AppData\Local\Programs\Python312"
+          $logfile = "$env:TEMP\python_install.log"
+          Write-Host "Installer path: $installerPath"
+          Write-Host "Install target: $target"
+          Write-Host "Log file: $logfile"
+          & $installerPath /quiet InstallAllUsers=0 PrependPath=1 Include_test=0 TargetDir="$target" /log "$logfile"
+          $exitcode = $LASTEXITCODE
+          Write-Host "Installer exit code: $exitcode"
+          Get-Content $logfile -ErrorAction SilentlyContinue | Write-Host
+          if ($exitcode -ne 0) {
+            Write-Error "Python installer failed with exit code $exitcode. Check the above log for details."
+            exit 1
+          }
+
+      - name: Verify Python Installation
+        shell: pwsh
+        run: |
+          Write-Host "Checking Python via system PATH"
+          $pycmd = Get-Command python -ErrorAction SilentlyContinue
+          if ($null -eq $pycmd) {
+            Write-Error "python.exe not found in PATH."
+            # Additional search for common manual install path:
+            $possible = "$env:USERPROFILE\AppData\Local\Programs\Python312\python.exe"
+            if (Test-Path $possible) {
+              Write-Host "Manually found python.exe at $possible"
+              & $possible --version
+            } else {
+              Write-Error "Python was not installed in default location."
+              exit 1
+            }
+          } else {
+            Write-Host "Found python.exe: $($pycmd.Source)"
+            & $pycmd.Source --version
+          }
