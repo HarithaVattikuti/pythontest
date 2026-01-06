@@ -10,17 +10,20 @@ jobs:
       - name: Download Python 3.12.10 arm64 installer
         run: |
           curl -O https://www.python.org/ftp/python/3.12.10/python-3.12.10-arm64.exe
+          # List files to verify download
+          dir
 
       - name: Install Python 3.12.10 arm64
         shell: pwsh
         run: |
           $installer = "python-3.12.10-arm64.exe"
+          $installerPath = Join-Path $PWD $installer
           $installDir = "C:\Python312"
-          if (!(Test-Path $installer)) {
-            Write-Error "Installer file $installer not found."
+          if (!(Test-Path $installerPath)) {
+            Write-Error "Installer file $installerPath not found."
             exit 1
           }
-          .\$installer /quiet InstallAllUsers=1 TargetDir=$installDir
+          & $installerPath /quiet InstallAllUsers=1 TargetDir=$installDir
           if ($LASTEXITCODE -ne 0) {
             Write-Error "Python installer failed with exit code $LASTEXITCODE"
             exit 1
