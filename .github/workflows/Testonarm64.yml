@@ -17,7 +17,12 @@ jobs:
           $installer = "python-3.12.10-arm64.exe"
           $installDir = "C:\Python312"
           # Install silently for all users to a specific directory
-          .\$installer /quiet InstallAllUsers=1 TargetDir=$installDir
+          Start-Process -FilePath $installer -ArgumentList "/quiet InstallAllUsers=1 TargetDir=$installDir" -Wait
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "Python installer failed with exit code $LASTEXITCODE"
+            exit 1
+          }
+          # .\$installer /quiet InstallAllUsers=1 TargetDir=$installDir
           if ($LASTEXITCODE -ne 0) {
             Write-Error "Python installer failed with exit code $LASTEXITCODE"
             exit 1
