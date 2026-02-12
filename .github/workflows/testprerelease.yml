@@ -21,8 +21,8 @@ jobs:
         id: setup-python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.15'
-          allow-prereleases: true
+          python-version: '3.15.0-alpha.6'
+          #allow-prereleases: true
 
 #      - name: Check python-path
  #       run: ./__tests__/check-python-path.sh '${{ steps.setup-python.outputs.python-path }}'
