@@ -1,0 +1,38 @@
+name: Test versions on arm runners
+
+on:
+  workflow_dispatch:
+
+jobs:
+  testversion:
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04-arm64,ubuntu-24.04-arm64]
+        
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show OS / kernel / toolchain versions
+        shell: bash
+        run: |
+          set -euxo pipefail
+          echo "== OS =="
+          cat /etc/os-release
+          uname -a
+
+          echo "== gcc / ld / make =="
+          gcc --version || true
+          ld --version || true
+          make --version || true
+
+      - name: Show bzip2 packages installed (runtime + dev) and available versions
+        shell: bash
+        run: |
+          set -euxo pipefail
+          echo "== Installed packages =="
+          dpkg -l | awk '/bz2|libbz2/ {print}'
+
+          echo "== Apt policy (what versions are available) =="
+          apt-cache policy bzip2 libbz2-1.0 libbz2-dev || true
