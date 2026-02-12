@@ -37,15 +37,24 @@ jobs:
           echo "== Apt policy (what versions are available) =="
           apt-cache policy bzip2 libbz2-1.0 libbz2-dev || true
           
-      - name: Update OS packages and install bz2 deps (22.04 only)
+      # - name: Update OS packages and install bz2 deps (22.04 only)
+      #   if: startsWith(matrix.os, 'ubuntu-22.04')
+      #   shell: bash
+      #   run: |
+      #     set -euxo pipefail
+      #     sudo apt-get update
+      #     sudo apt-get upgrade -y
+      #     sudo apt-get install -y --no-install-recommends \
+      #       bzip2 libbz2-1.0 libbz2-dev
+      
+      #     echo "== bzip2/libbz2 versions =="
+      #     apt-cache policy bzip2 libbz2-1.0 libbz2-dev
+
+      - name: Verify _bz2 is linked to custom libbz2 (ubuntu-22.04 only)
         if: startsWith(matrix.os, 'ubuntu-22.04')
         shell: bash
         run: |
           set -euxo pipefail
-          sudo apt-get update
-          sudo apt-get upgrade -y
-          sudo apt-get install -y --no-install-recommends \
-            bzip2 libbz2-1.0 libbz2-dev
-      
-          echo "== bzip2/libbz2 versions =="
-          apt-cache policy bzip2 libbz2-1.0 libbz2-dev
+          mod_path="$(./python -c 'import _bz2; print(_bz2.__file__)')"
+          echo "_bz2 extension: $mod_path"
+          ldd "$mod_path" | grep -E 'libbz2|not found' || true
