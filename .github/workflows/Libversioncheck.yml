@@ -43,49 +43,42 @@ jobs:
         os: [ubuntu-24.04-arm,ubuntu-22.04-arm]
         
     steps:
-      - uses: actions/checkout@v4
 
-      - name: Show OS / kernel / toolchain versions
+      - name: Enable jammy-updates and jammy-security (arm64 ports)
+        if: runner.os == 'Linux'
         shell: bash
         run: |
           set -euxo pipefail
-          echo "== OS =="
-          cat /etc/os-release
-          uname -a
-
-          echo "== gcc / ld / make =="
-          gcc --version || true
-          ld --version || true
-          make --version || true
-
-      - name: Show bzip2 packages installed (runtime + dev) and available versions
-        shell: bash
-        run: |
-          set -euxo pipefail
-          echo "== Installed packages =="
-          dpkg -l | awk '/bz2|libbz2/ {print}'
-
-          echo "== Apt policy (what versions are available) =="
-          apt-cache policy bzip2 libbz2-1.0 libbz2-dev || true
-          
-      # - name: Update OS packages and install bz2 deps (22.04 only)
-      #   if: startsWith(matrix.os, 'ubuntu-22.04')
-      #   shell: bash
-      #   run: |
-      #     set -euxo pipefail
-      #     sudo apt-get update
-      #     sudo apt-get upgrade -y
-      #     sudo apt-get install -y --no-install-recommends \
-      #       bzip2 libbz2-1.0 libbz2-dev
       
-      #     echo "== bzip2/libbz2 versions =="
-      #     apt-cache policy bzip2 libbz2-1.0 libbz2-dev
+          # Show current sources for debugging
+          echo "== Before =="
+          grep -R --no-messages -nE '^(deb|Types:|URIs:|Suites:|Components:)' \
+            /etc/apt/sources.list /etc/apt/sources.list.d/* || true
+      
+          # If the runner uses the newer deb822 source format (common), ensure it includes updates+security
+          if [ -f /etc/apt/sources.list.d/ubuntu.sources ]; then
+            # Add jammy-updates and jammy-security to the Suites line if missing
+            sudo sed -i -E \
+              's/^(Suites:.*jammy)(.*)$/\1 jammy-updates jammy-security\2/' \
+              /etc/apt/sources.list.d/ubuntu.sources
+          fi
+      
+          # If the runner uses classic sources.list, ensure updates+security entries exist
+          if [ -f /etc/apt/sources.list ]; then
+            # Append entries only if they don't exist already
+            grep -qE 'ubuntu-ports jammy-updates' /etc/apt/sources.list || echo "deb http://ports.ubuntu.com/ubuntu-ports jammy-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list
+            grep -qE 'ubuntu-ports jammy-security' /etc/apt/sources.list || echo "deb http://ports.ubuntu.com/ubuntu-ports jammy-security main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list
+          fi
+      
+          sudo apt-get update
+      
+          echo "== After =="
+          apt-cache policy libbz2-1.0
 
-      - name: Verify _bz2 is linked to custom libbz2 (ubuntu-22.04 only)
-        if: startsWith(matrix.os, 'ubuntu-22.04')
+      - name: Install required libbz2-1.0 version
+        if: runner.os == 'Linux'
         shell: bash
         run: |
           set -euxo pipefail
-          mod_path="$(./python -c 'import _bz2; print(_bz2.__file__)')"
-          echo "_bz2 extension: $mod_path"
-          ldd "$mod_path" | grep -E 'libbz2|not found' || true
+          sudo apt-get install -y libbz2-1.0=1.0.8-5.1build0.1
+          dpkg -s libbz2-1.0 | sed -n 's/^Version: //p'
