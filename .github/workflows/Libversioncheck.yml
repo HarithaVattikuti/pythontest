@@ -74,7 +74,18 @@ jobs:
       
           echo "== After =="
           apt-cache policy libbz2-1.0
-
+          
+      - name: Show available libbz2-1.0 versions after apt update
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -euxo pipefail
+          apt-cache policy libbz2-1.0
+          apt-cache madison libbz2-1.0 || true
+      
+          # Show the exact origin pocket for the candidate (if it changes)
+          apt-cache policy libbz2-1.0 | sed -n '1,120p'
+          
       - name: Install required libbz2-1.0 version
         if: runner.os == 'Linux'
         shell: bash
