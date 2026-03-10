@@ -20,12 +20,13 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest, ubuntu-22.04-arm, ubuntu-24.04-arm, windows-11-arm,macos-15-intel] 
     steps:
+    - uses: actions/checkout@v6
     - name: Setup Python ${{ github.event.inputs.version }}
       uses: HarithaVattikuti/setup-python@TestLatestPython
       with:
         python-version: ${{ github.event.inputs.version }}
         architecture: ${{ github.event.inputs.architecture }}
-        check-latest: true
+        # check-latest: true
 
 
     - name: Validate version
