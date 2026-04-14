@@ -1,0 +1,31 @@
+name: Test no Python Version
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Test:
+    strategy:
+      matrix:
+        os: [macos-latest,windows-latest,ubuntu-latest,windows-11-arm, ubuntu-22.04-arm, macos-15-intel]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+
+    steps:
+        - name: checkout
+          uses: actions/checkout@v6
+  
+        - name: setup-python
+          uses: actions/setup-python@v6
+  
+        - name: log-toolchain-versions
+          run: |
+            version=$(python --version)
+            echo "::notice::Using python version: $version"
+            pip install "pip<25.3" # Temporary pin to avoid issues with pip 25.3+
+            pip_version=$(pip --version)
+            echo "::notice::Using pip version: $pip_version"
+            pip install pip-tools
+            pip_compile_version=$(pip-compile --version)
+            echo "::notice::Using pip-compile version: $pip_compile_version"
+          shell: bash
