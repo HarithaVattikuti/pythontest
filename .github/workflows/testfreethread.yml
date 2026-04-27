@@ -4,7 +4,31 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-old-version:
+  test-old-x64-version:
+    name: Test 3.14 only
+    runs-on: windows-11-arm
+    steps:
+      - uses: actions/checkout@v6
+      
+      - name: Setup Python 3.14
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.14.2'
+          architecture: x64
+      
+      - name: Verify Python installation
+        shell: bash
+        run: |
+          echo "Python version:"
+          python --version
+          echo ""
+          echo "Python executable location:"
+          which python
+          echo ""
+          echo "Python sys info:"
+          python -c "import sys; print(f'Executable: {sys.executable}'); print(f'Version: {sys.version}')"
+  
+  test-old-arm64-version:
     name: Test 3.14 only
     runs-on: windows-11-arm
     steps:
