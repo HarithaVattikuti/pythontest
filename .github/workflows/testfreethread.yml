@@ -5,10 +5,22 @@ on:
 
 jobs:
   test-old-x64-version:
-    name: Test 3.14 only
+    name: Test 3.14 x64 only
     runs-on: windows-11-arm
     steps:
       - uses: actions/checkout@v6
+
+      - name: Uninstall Python 3.14.4 arm64
+        shell: pwsh
+        run: |
+          $exe = 'c:\hostedtoolcache\windows\Python\3.14.4\arm64\python-3.14.4-arm64.exe'
+          if (Test-Path $exe) {
+            Start-Process -FilePath $exe -ArgumentList @('/uninstall', '/quiet') -Wait
+          }
+          $dir = 'c:\hostedtoolcache\windows\Python\3.14.4'
+          if (Test-Path $dir) {
+            Remove-Item -Recurse -Force $dir
+          }
       
       - name: Setup Python 3.14
         uses: actions/setup-python@v6
@@ -29,11 +41,23 @@ jobs:
           python -c "import sys; print(f'Executable: {sys.executable}'); print(f'Version: {sys.version}')"
   
   test-old-arm64-version:
-    name: Test 3.14 only
+    name: Test 3.14.2 arm64 only
     runs-on: windows-11-arm
     steps:
       - uses: actions/checkout@v6
       
+      - name: Uninstall Python 3.14.4 arm64
+        shell: pwsh
+        run: |
+          $exe = 'c:\hostedtoolcache\windows\Python\3.14.4\arm64\python-3.14.4-arm64.exe'
+          if (Test-Path $exe) {
+            Start-Process -FilePath $exe -ArgumentList @('/uninstall', '/quiet') -Wait
+          }
+          $dir = 'c:\hostedtoolcache\windows\Python\3.14.4'
+          if (Test-Path $dir) {
+            Remove-Item -Recurse -Force $dir
+          }
+          
       - name: Setup Python 3.14
         uses: actions/setup-python@v6
         with:
@@ -57,6 +81,18 @@ jobs:
     runs-on: windows-11-arm
     steps:
       - uses: actions/checkout@v6
+
+      - name: Uninstall Python 3.14.4 arm64
+        shell: pwsh
+        run: |
+          $exe = 'c:\hostedtoolcache\windows\Python\3.14.4\arm64\python-3.14.4-arm64.exe'
+          if (Test-Path $exe) {
+            Start-Process -FilePath $exe -ArgumentList @('/uninstall', '/quiet') -Wait
+          }
+          $dir = 'c:\hostedtoolcache\windows\Python\3.14.4'
+          if (Test-Path $dir) {
+            Remove-Item -Recurse -Force $dir
+          }
       
       - name: Setup Python 3.14t (free-threaded)
         uses: actions/setup-python@v6
@@ -81,11 +117,24 @@ jobs:
         shell: bash
         run: |
           python -c "import sys; print(f'Free-threading enabled: {sys._is_gil_enabled() if hasattr(sys, \"_is_gil_enabled\") else \"Unknown\"}')"
+ 
   test-314-and-314t-together:
     name: Test 3.14 and 3.14t together (one step)
     runs-on: windows-11-arm
     steps:
       - uses: actions/checkout@v6
+
+      - name: Uninstall Python 3.14.4 arm64
+        shell: pwsh
+        run: |
+          $exe = 'c:\hostedtoolcache\windows\Python\3.14.4\arm64\python-3.14.4-arm64.exe'
+          if (Test-Path $exe) {
+            Start-Process -FilePath $exe -ArgumentList @('/uninstall', '/quiet') -Wait
+          }
+          $dir = 'c:\hostedtoolcache\windows\Python\3.14.4'
+          if (Test-Path $dir) {
+            Remove-Item -Recurse -Force $dir
+          }
       
       - name: Setup Python 3.14 and 3.14t
         uses: actions/setup-python@v6
@@ -128,7 +177,19 @@ jobs:
         python-version: ['3.14', '3.14t']
     steps:
       - uses: actions/checkout@v6
-      
+
+      - name: Uninstall Python 3.14.4 arm64
+        shell: pwsh
+        run: |
+          $exe = 'c:\hostedtoolcache\windows\Python\3.14.4\arm64\python-3.14.4-arm64.exe'
+          if (Test-Path $exe) {
+            Start-Process -FilePath $exe -ArgumentList @('/uninstall', '/quiet') -Wait
+          }
+          $dir = 'c:\hostedtoolcache\windows\Python\3.14.4'
+          if (Test-Path $dir) {
+            Remove-Item -Recurse -Force $dir
+          }
+          
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v6
         with:
