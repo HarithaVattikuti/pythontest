@@ -1,0 +1,106 @@
+name: Test Python 3.14t on Windows ARM64
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-single-version:
+    name: Test 3.14t only
+    runs-on: windows-11-arm
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python 3.14t (free-threaded)
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.14t'
+          architecture: arm64
+          allow-prereleases: true
+      
+      - name: Verify Python installation
+        shell: bash
+        run: |
+          echo "Python version:"
+          python --version
+          echo ""
+          echo "Python executable location:"
+          which python
+          echo ""
+          echo "Python sys info:"
+          python -c "import sys; print(f'Executable: {sys.executable}'); print(f'Version: {sys.version}')"
+      
+      - name: Test free-threading is enabled
+        shell: bash
+        run: |
+          python -c "import sys; print(f'Free-threading enabled: {sys._is_gil_enabled() if hasattr(sys, \"_is_gil_enabled\") else \"Unknown\"}')"
+  test-314-and-314t-together:
+    name: Test 3.14 and 3.14t together (one step)
+    runs-on: windows-11-arm
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python 3.14 and 3.14t
+        uses: actions/setup-python@v6
+        with:
+          python-version: |
+            3.14
+            3.14t
+          architecture: arm64
+          allow-prereleases: true
+      
+      - name: Verify Python installation
+        shell: bash
+        run: |
+          echo "Default Python version:"
+          python --version
+          echo ""
+          echo "Python executable location:"
+          which python
+          echo ""
+          echo "Python sys info:"
+          python -c "import sys; print(f'Executable: {sys.executable}'); print(f'Version: {sys.version}')"
+          echo ""
+          echo "=== Checking all installed Python versions ==="
+          for py in python3.14 python3.14t; do
+            echo ""
+            echo "Testing $py:"
+            if command -v $py &> /dev/null; then
+              $py --version
+              $py -c "import sys; print(f'  Executable: {sys.executable}')"
+              $py -c "import sys; print(f'  Free-threading: {sys._is_gil_enabled() if hasattr(sys, \"_is_gil_enabled\") else \"N/A\"}')"
+            else
+              echo "  $py not found!"
+            fi
+          done
+  test-separated-jobs:
+    name: Test 3.14 and 3.14t in separate jobs
+    runs-on: windows-11-arm
+    strategy:
+      matrix:
+        python-version: ['3.14', '3.14t']
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: arm64
+          allow-prereleases: true
+      
+      - name: Verify Python installation
+        shell: bash
+        run: |
+          echo "Python version:"
+          python --version
+          echo ""
+          echo "Python executable location:"
+          which python
+          echo ""
+          echo "Python sys info:"
+          python -c "import sys; print(f'Executable: {sys.executable}'); print(f'Version: {sys.version}')"
+          echo ""
+          if [ "${{ matrix.python-version }}" == "3.14t" ]; then
+            echo "Free-threading status:"
+            python -c "import sys; print(f'Free-threading enabled: {sys._is_gil_enabled() if hasattr(sys, \"_is_gil_enabled\") else \"N/A\"}')"
+          fi
