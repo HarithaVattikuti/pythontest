@@ -4,11 +4,35 @@ on:
   workflow_dispatch:
 
 jobs:
+  test-old-version:
+    name: Test 3.14 only
+    runs-on: windows-11-arm
+    steps:
+      - uses: actions/checkout@v6
+      
+      - name: Setup Python 3.14
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.14.2'
+          architecture: arm64
+      
+      - name: Verify Python installation
+        shell: bash
+        run: |
+          echo "Python version:"
+          python --version
+          echo ""
+          echo "Python executable location:"
+          which python
+          echo ""
+          echo "Python sys info:"
+          python -c "import sys; print(f'Executable: {sys.executable}'); print(f'Version: {sys.version}')"
+      
   test-single-version:
     name: Test 3.14t only
     runs-on: windows-11-arm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       - name: Setup Python 3.14t (free-threaded)
         uses: actions/setup-python@v6
@@ -37,7 +61,7 @@ jobs:
     name: Test 3.14 and 3.14t together (one step)
     runs-on: windows-11-arm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       - name: Setup Python 3.14 and 3.14t
         uses: actions/setup-python@v6
@@ -79,7 +103,7 @@ jobs:
       matrix:
         python-version: ['3.14', '3.14t']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v6
