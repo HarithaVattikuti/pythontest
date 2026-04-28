@@ -32,3 +32,55 @@ jobs:
       - uses: HarithaVattikuti/setup-python@Testwinarm
         with:
           python-version: ${{matrix.vers}}
+          
+  test-314-and-314t-together:
+    name: Test 3.14 and 3.14t together (one step)
+    runs-on: windows-11-arm
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Uninstall Python 3.14.4 arm64
+        shell: pwsh
+        run: |
+          $exe = 'c:\hostedtoolcache\windows\Python\3.14.4\arm64\python-3.14.4-arm64.exe'
+          if (Test-Path $exe) {
+            Start-Process -FilePath $exe -ArgumentList @('/uninstall', '/quiet') -Wait
+          }
+          $dir = 'c:\hostedtoolcache\windows\Python\3.14.4'
+          if (Test-Path $dir) {
+            Remove-Item -Recurse -Force $dir
+          }
+      
+      - name: Setup Python 3.14 and 3.14t
+        uses: HarithaVattikuti/setup-python@Testwinarm
+        with:
+          python-version: |
+            3.14.4
+            3.14.4t
+          architecture: arm64
+          allow-prereleases: true
+      
+      - name: Verify Python installation
+        shell: bash
+        run: |
+          echo "Default Python version:"
+          python --version
+          echo ""
+          echo "Python executable location:"
+          which python
+          echo ""
+          echo "Python sys info:"
+          python -c "import sys; print(f'Executable: {sys.executable}'); print(f'Version: {sys.version}')"
+          echo ""
+          echo "=== Checking all installed Python versions ==="
+          for py in python3.14 python3.14t; do
+            echo ""
+            echo "Testing $py:"
+            if command -v $py &> /dev/null; then
+              $py --version
+              $py -c "import sys; print(f'  Executable: {sys.executable}')"
+              $py -c "import sys; print(f'  Free-threading: {sys._is_gil_enabled() if hasattr(sys, \"_is_gil_enabled\") else \"N/A\"}')"
+            else
+              echo "  $py not found!"
+            fi
+          done
