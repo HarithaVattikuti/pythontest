@@ -39,18 +39,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Uninstall Python 3.14.4 arm64
-        shell: pwsh
-        run: |
-          $exe = 'c:\hostedtoolcache\windows\Python\3.14.4\arm64\python-3.14.4-arm64.exe'
-          if (Test-Path $exe) {
-            Start-Process -FilePath $exe -ArgumentList @('/uninstall', '/quiet') -Wait
-          }
-          $dir = 'c:\hostedtoolcache\windows\Python\3.14.4'
-          if (Test-Path $dir) {
-            Remove-Item -Recurse -Force $dir
-          }
-      
       - name: Setup Python 3.14 and 3.14t
         uses: HarithaVattikuti/setup-python@Testwinarm
         with:
