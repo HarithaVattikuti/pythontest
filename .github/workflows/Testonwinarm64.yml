@@ -4,32 +4,32 @@ on:
   workflow_dispatch:
   
 jobs:
-  test:
-    runs-on: ${{matrix.os}}
-    strategy:
-      fail-fast: false
-      matrix:
-        vers: ['3.12.10','3.13.7','3.13.7t','3.13.13','3.13.13t','3.14.4','3.14.4t']
-        os: ['windows-11-arm']
-    steps:
-      - uses: actions/checkout@v6   
+  # test:
+  #   runs-on: ${{matrix.os}}
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       vers: ['3.12.10','3.13.7','3.13.7t','3.13.13','3.13.13t','3.14.4','3.14.4t']
+  #       os: ['windows-11-arm']
+  #   steps:
+  #     - uses: actions/checkout@v6   
       
-      - uses: actions/setup-python@v6
-        with:
-          python-version: ${{matrix.vers}}
-          architecture: 'arm64'
+  #     - uses: HarithaVattikuti/setup-python@Testwinarm
+  #       with:
+  #         python-version: ${{matrix.vers}}
+  #         architecture: 'arm64'
           
   testonallwin:
     runs-on: ${{matrix.os}}
     strategy:
       fail-fast: false
       matrix:
-        vers: ['3.12.10','3.13.7','3.13.7t','3.13.13','3.13.13t','3.14.4','3.14.4t']
+        vers: ['3.13.13','3.13.13t','3.14.4','3.14.4t']
         os: ['windows-11-arm', 'windows-latest']
     steps:
       - uses: actions/checkout@v6   
       
-      - uses: actions/setup-python@v6
+      - uses: HarithaVattikuti/setup-python@Testwinarm
         with:
           python-version: ${{matrix.vers}}
           
