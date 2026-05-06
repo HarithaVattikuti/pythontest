@@ -1,0 +1,42 @@
+name: "Reproduce #1290 — All GitHub-hosted Windows"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - Test1290
+
+jobs:
+  verify:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest,windows-11-arm, windows-2022]
+    env:
+      AGENT_TOOLSDIRECTORY: "C:\\Hosted Tool Cache"
+
+    steps:
+      - name: Create spaced tool cache directory
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Path $env:AGENT_TOOLSDIRECTORY -Force | Out-Null
+          Write-Host "Created: $env:AGENT_TOOLSDIRECTORY"
+      - name: Clear any cached Python
+        shell: powershell
+        run: |
+          $pythonDir = Join-Path $env:AGENT_TOOLSDIRECTORY "Python"
+          if (Test-Path $pythonDir) {
+            Remove-Item $pythonDir -Recurse -Force
+            Write-Host "Cleared $pythonDir"
+          }
+      - name: Setup Python using forked setup-python
+        uses: HarithaVattikuti/setup-python@Test1290
+        with:
+          python-version: "3.14.3"
+
+      - name: Verify installation
+        shell: powershell
+        run: |
+          python --version
+          python -m pip --version
