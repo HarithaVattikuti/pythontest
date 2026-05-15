@@ -7,55 +7,14 @@ jobs:
   run-script:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
+      - name: Which python3
+        run: which python3
 
-      - name: Find Python Path 
-        run: |
-          echo "Finding full Python path..."
-          PYTHON_PATH=$(readlink -f $(which python3))
-          echo "Python full path is: $PYTHON_PATH"
-          echo "RUNNER_TOOL_CACHE=$PYTHON_PATH" >> $GITHUB_ENV
-      
-      - name: Verify Python Path
-        run: |
-          echo "RUNNER_TOOL_CACHE=$RUNNER_TOOL_CACHE"
-        
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: '20'
+      - name: Real path of python3
+        run: readlink -f $(which python3)
 
-      - name: Find Python Path from Tool Cache
-        run: |
-          npm install @actions/tool-cache
-          node find-python.js
+      - name: Find all tool cache Python bins
+        run: find /opt/hostedtoolcache/Python/ -type d -name bin
 
-      - name: Verify Python Path
-        run: |
-          echo "Python full path: $PYTHON_PATH"
-        
-      # - name: Set up PowerShell
-      #   uses: actions/setup-python@v5
-      #   with:
-      #     python-version: '3.12.12'
-    
-
-      # - name: Run PowerShell script
-      #   run: |
-      #     $versions = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/actions/python-versions/refs/heads/main/versions-manifest.json"
-      #     # Count the number of workflows running each version of Python 3.x
-      #     $pythonVersions = @{}
-      #     foreach ($version in $versions) {
-      #       if ($version.version -match "^3\..*") {
-      #         if (-not $pythonVersions.ContainsKey($version.version)) {
-      #           $pythonVersions[$version.version] = 0
-      #         }
-      #         $pythonVersions[$version.version]++
-      #       }
-      #     }
-      #     # Print the counts
-      #     foreach ($key in $pythonVersions.Keys) {
-      #       Write-Output "${key}: $($pythonVersions[$key])"
-      #     }
-      #   shell: pwsh
+      - name: Python3 executable from Python
+        run: python3 -c "import sys; print(sys.executable)"
