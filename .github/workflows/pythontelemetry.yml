@@ -8,19 +8,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Find Python Path 
         run: |
-          echo "Finding Python path..."
-          PYTHON_PATH=$(which python3)
-          echo "Python path is: $PYTHON_PATH"
+          echo "Finding full Python path..."
+          PYTHON_PATH=$(readlink -f $(which python3))
+          echo "Python full path is: $PYTHON_PATH"
           echo "RUNNER_TOOL_CACHE=$PYTHON_PATH" >> $GITHUB_ENV
-
+      
+      - name: Verify Python Path
+        run: |
+          echo "RUNNER_TOOL_CACHE=$RUNNER_TOOL_CACHE"
+        
       - name: Set up PowerShell
         uses: actions/setup-python@v5
         with:
           python-version: '3.12.12'
+    
 
       # - name: Run PowerShell script
       #   run: |
