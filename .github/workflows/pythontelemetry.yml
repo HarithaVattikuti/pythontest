@@ -10,26 +10,33 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Find Python Path 
+        run: |
+          echo "Finding Python path..."
+          PYTHON_PATH=$(which python3)
+          echo "Python path is: $PYTHON_PATH"
+          echo "RUNNER_TOOL_CACHE=$PYTHON_PATH" >> $GITHUB_ENV
+
       - name: Set up PowerShell
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.12.12'
 
-      - name: Run PowerShell script
-        run: |
-          $versions = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/actions/python-versions/refs/heads/main/versions-manifest.json"
-          # Count the number of workflows running each version of Python 3.x
-          $pythonVersions = @{}
-          foreach ($version in $versions) {
-            if ($version.version -match "^3\..*") {
-              if (-not $pythonVersions.ContainsKey($version.version)) {
-                $pythonVersions[$version.version] = 0
-              }
-              $pythonVersions[$version.version]++
-            }
-          }
-          # Print the counts
-          foreach ($key in $pythonVersions.Keys) {
-            Write-Output "${key}: $($pythonVersions[$key])"
-          }
-        shell: pwsh
+      # - name: Run PowerShell script
+      #   run: |
+      #     $versions = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/actions/python-versions/refs/heads/main/versions-manifest.json"
+      #     # Count the number of workflows running each version of Python 3.x
+      #     $pythonVersions = @{}
+      #     foreach ($version in $versions) {
+      #       if ($version.version -match "^3\..*") {
+      #         if (-not $pythonVersions.ContainsKey($version.version)) {
+      #           $pythonVersions[$version.version] = 0
+      #         }
+      #         $pythonVersions[$version.version]++
+      #       }
+      #     }
+      #     # Print the counts
+      #     foreach ($key in $pythonVersions.Keys) {
+      #       Write-Output "${key}: $($pythonVersions[$key])"
+      #     }
+      #   shell: pwsh
