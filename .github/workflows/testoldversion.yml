@@ -5,33 +5,10 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-24.04
     steps:
-        - uses: actions/checkout@v4
+        - uses: actions/checkout@v6
         - name: test 3.8
-          uses: actions/setup-python@v5
+          uses: actions/setup-python@v6
           with:
             python-version: "3.8"
-            allow-prereleases: true
-
-  build-host-win:
-    runs-on: windows-latest
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Set up python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9.13'
-
-    # - name: Install setuptools
-    #   shell: cmd
-    #   run: py -m pip install --upgrade pip setuptools wheel
-
-    - name: Get version string
-      shell: cmd
-      id: get_version
-      run: |
-        py ./get_version_string.py
