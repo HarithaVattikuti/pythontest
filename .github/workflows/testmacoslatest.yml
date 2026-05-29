@@ -4,39 +4,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  buildv4:
-    name: Test on v4
+  buildv6:
+    name: Test on v6
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, macos-13, macos-14]
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12" , "pypy3.7", "pypy3.8", "pypy3.9"]
+        os: [macos-latest , macos-15-intel]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
     
     steps:
-        - uses: actions/checkout@v2
-
-        - name: Set up Python using v4
-          uses: actions/setup-python@v4
-          with:
-              python-version: ${{ matrix.python-version }}
-#              architecture: arm64
-
-
-  buildv5:
-    name: Test on v5
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-latest , macos-13, macos-14]
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "pypy3.7", "pypy3.8", "pypy3.9"]
-    
-    steps:
-        - uses: actions/checkout@v2
+        - uses: actions/checkout@v6
 
         - name: Set up Python using v5
-          uses: actions/setup-python@v5
+          uses: actions/setup-python@v6
           with:
               python-version: ${{ matrix.python-version }}
-#              architecture: arm64
